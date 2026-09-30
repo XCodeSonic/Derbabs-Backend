@@ -1,0 +1,12 @@
+.loadingScreen {
+  align-items: center;
+  color: #666;
+  display: flex;
+  font-size: 1.2rem;
+  height: 100vh;
+  justify-content: center;
+}
+
+.loadingText {
+  margin-left: 10px;
+}

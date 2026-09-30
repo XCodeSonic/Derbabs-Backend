@@ -1,0 +1,371 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\Position;
+
+class PositionSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $positions = [
+            // Executive Management
+            [
+                'position_id' => 1,
+                'department_id' => 1,
+                'salary_grade_id' => 7,
+                'title' => 'Chief Executive Officer',
+                'code' => 'CEO',
+                'description' => 'Overall business leadership and strategic direction',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 2,
+                'department_id' => 1,
+                'salary_grade_id' => 6,
+                'title' => 'Chief Operating Officer',
+                'code' => 'COO',
+                'description' => 'Oversee day-to-day operations',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            
+            // Operations
+            [
+                'position_id' => 3,
+                'department_id' => 2,
+                'salary_grade_id' => 5,
+                'title' => 'Operations Manager',
+                'code' => 'OPS-MGR',
+                'description' => 'Manage overall operations',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 4,
+                'department_id' => 2,
+                'salary_grade_id' => 3,
+                'title' => 'Operations Supervisor',
+                'code' => 'OPS-SUP',
+                'description' => 'Supervise operations staff',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 5,
+                'department_id' => 2,
+                'salary_grade_id' => 2,
+                'title' => 'Operations Staff',
+                'code' => 'OPS-STF',
+                'description' => 'General operations support',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            
+            // Kitchen & Culinary
+            [
+                'position_id' => 6,
+                'department_id' => 3,
+                'salary_grade_id' => 5,
+                'title' => 'Executive Chef',
+                'code' => 'EXEC-CHEF',
+                'description' => 'Lead culinary operations and menu development',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 7,
+                'department_id' => 3,
+                'salary_grade_id' => 4,
+                'title' => 'Sous Chef',
+                'code' => 'SOUS-CHEF',
+                'description' => 'Assist Executive Chef in kitchen operations',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 8,
+                'department_id' => 3,
+                'salary_grade_id' => 3,
+                'title' => 'Pastry Chef',
+                'code' => 'PASTRY-CHEF',
+                'description' => 'Manage pastry and dessert production',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 9,
+                'department_id' => 3,
+                'salary_grade_id' => 3,
+                'title' => 'Line Cook',
+                'code' => 'LINE-COOK',
+                'description' => 'Prepare dishes in assigned station',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 10,
+                'department_id' => 3,
+                'salary_grade_id' => 2,
+                'title' => 'Prep Cook',
+                'code' => 'PREP-COOK',
+                'description' => 'Prepare ingredients and assist cooks',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 11,
+                'department_id' => 3,
+                'salary_grade_id' => 1,
+                'title' => 'Kitchen Assistant',
+                'code' => 'KITCHEN-ASST',
+                'description' => 'Assist in kitchen operations',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            
+            // Events & Planning
+            [
+                'position_id' => 12,
+                'department_id' => 4,
+                'salary_grade_id' => 5,
+                'title' => 'Events Director',
+                'code' => 'EVT-DIR',
+                'description' => 'Oversee all events and planning',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 13,
+                'department_id' => 4,
+                'salary_grade_id' => 4,
+                'title' => 'Event Coordinator',
+                'code' => 'EVT-COORD',
+                'description' => 'Coordinate event logistics and client relations',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 14,
+                'department_id' => 4,
+                'salary_grade_id' => 3,
+                'title' => 'Event Planner',
+                'code' => 'EVT-PLAN',
+                'description' => 'Plan and execute event details',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            
+            // Sales & Marketing
+            [
+                'position_id' => 15,
+                'department_id' => 5,
+                'salary_grade_id' => 5,
+                'title' => 'Sales & Marketing Director',
+                'code' => 'S&M-DIR',
+                'description' => 'Lead sales and marketing strategies',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 16,
+                'department_id' => 5,
+                'salary_grade_id' => 4,
+                'title' => 'Sales Manager',
+                'code' => 'SALES-MGR',
+                'description' => 'Manage sales team and client acquisition',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 17,
+                'department_id' => 5,
+                'salary_grade_id' => 3,
+                'title' => 'Sales Executive',
+                'code' => 'SALES-EXEC',
+                'description' => 'Acquire and manage client relationships',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 18,
+                'department_id' => 5,
+                'salary_grade_id' => 2,
+                'title' => 'Marketing Specialist',
+                'code' => 'MKT-SPEC',
+                'description' => 'Manage marketing campaigns and social media',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            
+            // Finance & Accounting
+            [
+                'position_id' => 19,
+                'department_id' => 6,
+                'salary_grade_id' => 5,
+                'title' => 'Finance Manager',
+                'code' => 'FIN-MGR',
+                'description' => 'Manage financial operations and reporting',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 20,
+                'department_id' => 6,
+                'salary_grade_id' => 4,
+                'title' => 'Accountant',
+                'code' => 'ACCOUNTANT',
+                'description' => 'Manage accounting and bookkeeping',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 21,
+                'department_id' => 6,
+                'salary_grade_id' => 3,
+                'title' => 'Senior Bookkeeper',
+                'code' => 'BKPR-SR',
+                'description' => 'Oversee bookkeeping and financial records',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 22,
+                'department_id' => 6,
+                'salary_grade_id' => 2,
+                'title' => 'Bookkeeper',
+                'code' => 'BKPR',
+                'description' => 'Maintain financial records and transactions',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 23,
+                'department_id' => 6,
+                'salary_grade_id' => 2,
+                'title' => 'Cashier',
+                'code' => 'CASHIER',
+                'description' => 'Process payments and manage cash transactions',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            
+            // Human Resources
+            [
+                'position_id' => 24,
+                'department_id' => 7,
+                'salary_grade_id' => 5,
+                'title' => 'HR Manager',
+                'code' => 'HR-MGR',
+                'description' => 'Manage human resources operations',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 25,
+                'department_id' => 7,
+                'salary_grade_id' => 3,
+                'title' => 'HR Specialist',
+                'code' => 'HR-SPEC',
+                'description' => 'Manage recruitment, benefits, and employee relations',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            
+            // Logistics & Delivery
+            [
+                'position_id' => 26,
+                'department_id' => 8,
+                'salary_grade_id' => 4,
+                'title' => 'Logistics Manager',
+                'code' => 'LOG-MGR',
+                'description' => 'Manage logistics and delivery operations',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 27,
+                'department_id' => 8,
+                'salary_grade_id' => 3,
+                'title' => 'Logistics Coordinator',
+                'code' => 'LOG-COORD',
+                'description' => 'Coordinate deliveries and logistics',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 28,
+                'department_id' => 8,
+                'salary_grade_id' => 2,
+                'title' => 'Delivery Driver',
+                'code' => 'DRIVER',
+                'description' => 'Transport catering orders to clients',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            
+            // Inventory & Procurement
+            [
+                'position_id' => 29,
+                'department_id' => 9,
+                'salary_grade_id' => 4,
+                'title' => 'Procurement Manager',
+                'code' => 'PROC-MGR',
+                'description' => 'Manage purchasing and vendor relations',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 30,
+                'department_id' => 9,
+                'salary_grade_id' => 3,
+                'title' => 'Purchasing Officer',
+                'code' => 'PURCH-OFF',
+                'description' => 'Handle purchase orders and supplier coordination',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 31,
+                'department_id' => 9,
+                'salary_grade_id' => 2,
+                'title' => 'Inventory Clerk',
+                'code' => 'INV-CLK',
+                'description' => 'Manage inventory records and stock monitoring',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            
+            // Maintenance & Facilities
+            [
+                'position_id' => 32,
+                'department_id' => 10,
+                'salary_grade_id' => 4,
+                'title' => 'Maintenance Manager',
+                'code' => 'MNT-MGR',
+                'description' => 'Manage facilities and equipment maintenance',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+            [
+                'position_id' => 33,
+                'department_id' => 10,
+                'salary_grade_id' => 3,
+                'title' => 'Maintenance Technician',
+                'code' => 'MNT-TECH',
+                'description' => 'Perform repairs and maintenance',
+                'employment_type' => 'full_time',
+                'is_active' => true,
+            ],
+        ];
+
+        foreach ($positions as $position) {
+            Position::updateOrCreate(
+                ['position_id' => $position['position_id']],
+                $position
+            );
+        }
+    }
+}

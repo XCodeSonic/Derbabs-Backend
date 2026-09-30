@@ -1,0 +1,2 @@
+     UID     PID    PPID  TTY        STIME COMMAND
+Jaxx Lau    1607       1 cons0    18:09:33 PS C:\CAPSTONE\catering-management-system\backend -f storage/logs/laravel.log 

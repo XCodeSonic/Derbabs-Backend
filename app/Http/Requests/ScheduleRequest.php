@@ -1,0 +1,2 @@
+<?php
+namespace App\Http\Requests;use Illuminate\Foundation\Http\FormRequest;class ScheduleRequest extends FormRequest{public function authorize():bool{return true;}public function rules():array{return ['employee_id'=>'required|exists:employees,employee_id','work_date'=>'required|date','start_time'=>'required','end_time'=>'required','service_event_id'=>'nullable|exists:service_events,service_event_id'];}}

@@ -1,0 +1,2 @@
+<?php
+namespace App\Http\Requests;use Illuminate\Foundation\Http\FormRequest;class EmployeeRequest extends FormRequest{public function authorize():bool{return true;}public function rules():array{return ['first_name'=>'required','last_name'=>'required','email'=>'required|email','phone'=>'required','department_id'=>'required|exists:departments,department_id','position_id'=>'required|exists:positions,position_id','hire_date'=>'required|date','employee_type'=>'required','status'=>'required'];}}

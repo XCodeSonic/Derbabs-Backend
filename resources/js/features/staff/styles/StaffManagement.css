@@ -1,0 +1,2613 @@
+/* src/components/styles/Staff_Management.css */
+
+/* ==================== BASE LAYOUT ==================== */
+.catering-layout {
+  min-height: 100vh;
+  background: #f5f7fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.catering-main {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* ==================== HEADER ==================== */
+.catering-header {
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  padding: 0 24px;
+  height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.catering-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.catering-logo-icon {
+  width: 44px;
+  height: 44px;
+  background: #2852c4;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.catering-logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.catering-logo-text h1 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: #0f172a;
+  letter-spacing: -0.2px;
+  line-height: 1.3;
+}
+
+.catering-logo-text span {
+  font-size: 11px;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.catering-header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.catering-date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.catering-search {
+  position: relative;
+}
+
+.catering-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.catering-search-input {
+  padding: 8px 12px 8px 36px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  width: 280px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.catering-search-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.catering-search-clear {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0;
+}
+
+.catering-header-icon {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.catering-header-icon:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+/* ==================== STATISTICS ==================== */
+.catering-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.catering-stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.catering-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.catering-stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.catering-stat-content h3 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  color: #1f2937;
+}
+
+.catering-stat-content span {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.catering-stat-change {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* ==================== QUICK ACTIONS ==================== */
+.catering-quick-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.catering-quick-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: white;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid #e5e7eb;
+}
+
+.catering-quick-action:hover {
+  background: #f9fafb;
+  border-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.catering-quick-icon {
+  font-size: 16px;
+  color: #2563eb;
+}
+
+.catering-quick-action span {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* ==================== ARCHIVE SECTION ==================== */
+.catering-archive-section {
+  background: white;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.catering-archive-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.catering-archive-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.catering-archive-count {
+  font-size: 13px;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.catering-archive-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 16px;
+  padding: 4px;
+}
+
+.catering-archive-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.catering-archive-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.catering-archive-item:last-child {
+  border-bottom: none;
+}
+
+.catering-archive-item-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.catering-archive-avatar img,
+.catering-archive-avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.catering-archive-avatar-placeholder {
+  background: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.catering-archive-details h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.catering-archive-details p {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.catering-archive-details small {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.catering-archive-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.catering-archive-restore-btn,
+.catering-archive-delete-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.catering-archive-restore-btn {
+  background: #e6f7e6;
+  color: #059669;
+}
+
+.catering-archive-restore-btn:hover {
+  background: #d1fae5;
+}
+
+.catering-archive-delete-btn {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.catering-archive-delete-btn:hover {
+  background: #fecaca;
+}
+
+.catering-archive-empty {
+  text-align: center;
+  padding: 48px;
+  color: #9ca3af;
+}
+
+.catering-archive-empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+/* ==================== FILTERS ==================== */
+.catering-filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.catering-filter-tabs {
+  display: flex;
+  gap: 4px;
+  background: #f3f4f6;
+  padding: 4px;
+  border-radius: 40px;
+}
+
+.catering-filter-tab {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  border-radius: 32px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
+  transition: all 0.2s;
+}
+
+.catering-filter-tab.active {
+  background: white;
+  color: #2563eb;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.catering-filter-select {
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 13px;
+  background: white;
+  cursor: pointer;
+}
+
+.catering-badge-group {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+.catering-badge {
+  padding: 4px 10px;
+  background: #f3f4f6;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ==================== BULK ACTIONS ==================== */
+.catering-bulk-actions-bar {
+  background: #2563eb;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.catering-bulk-count {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.catering-bulk-action {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.catering-bulk-action:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.catering-bulk-close {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-left: auto;
+  font-size: 16px;
+}
+
+/* ==================== TABLE ==================== */
+.catering-table-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.catering-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.catering-table-title h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.catering-table-count {
+  font-size: 13px;
+  color: #6b7280;
+  margin-left: 8px;
+}
+
+.catering-table-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.catering-btn {
+  padding: 8px 16px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.catering-btn:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.catering-btn-primary {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: white;
+}
+
+.catering-btn-primary:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: white;
+}
+
+.catering-btn-warning {
+  background: #f59e0b;
+  border-color: #f59e0b;
+  color: white;
+}
+
+.catering-btn-warning:hover {
+  background: #d97706;
+  border-color: #d97706;
+}
+
+.catering-table-container {
+  overflow-x: auto;
+  overflow-y: visible;
+  max-height: none;
+}
+
+.catering-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.catering-table th {
+  text-align: left;
+  padding: 12px 16px;
+  background: #f9fafb;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  user-select: none;
+}
+
+.catering-table th:hover {
+  background: #f3f4f6;
+}
+
+.catering-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+  color: #374151;
+}
+
+.catering-table tr:hover {
+  background: #f9fafb;
+}
+
+.catering-table tr.selected {
+  background: #eff6ff;
+}
+
+/* ==================== EMPLOYEE CELL ==================== */
+.catering-employee-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.catering-employee-avatar {
+  position: relative;
+}
+
+.catering-employee-avatar img,
+.catering-employee-avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.catering-employee-avatar-placeholder {
+  background: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.catering-employee-bookmark {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  background: white;
+  border-radius: 50%;
+  font-size: 12px;
+  color: #fbbf24;
+  padding: 2px;
+}
+
+.catering-employee-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.catering-employee-name {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.catering-employee-id {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* ==================== BADGES & TAGS ==================== */
+.catering-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.catering-tag.active-status {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.catering-tag.onleave-status {
+  background: #fed7aa;
+  color: #c2410c;
+}
+
+.catering-tag.inactive-status {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.catering-tag.terminated-status {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.catering-role-badge {
+  background: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ==================== STATUS BADGE & DROPDOWN ==================== */
+.catering-status-cell {
+  position: relative;
+}
+
+.catering-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.catering-status-badge:hover {
+  opacity: 0.8;
+  transform: scale(1.02);
+}
+
+.catering-status-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+  min-width: 160px;
+  z-index: 1000;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.catering-status-dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.catering-status-dropdown-header button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 0;
+}
+
+.catering-status-dropdown-options {
+  padding: 8px 0;
+}
+
+.catering-status-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: #374151;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.catering-status-option:hover {
+  background: #f3f4f6;
+}
+
+.catering-status-option.active {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+/* ==================== CONTACT INFO ==================== */
+.catering-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.catering-contact-info span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ==================== ACTIONS ==================== */
+.catering-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.catering-action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.catering-action-btn.view:hover {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.catering-action-btn.edit:hover {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.catering-action-btn.bookmark:hover {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.catering-action-btn.delete:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* ==================== PAGINATION ==================== */
+.catering-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.catering-pagination-info {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.catering-pagination-controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.catering-pagination-btn {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.catering-pagination-btn:hover:not(:disabled) {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.catering-pagination-btn.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: white;
+}
+
+.catering-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==================== MODALS ==================== */
+.catering-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.catering-modal {
+  background: white;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.catering-modal.large-modal {
+  max-width: 1000px;
+}
+
+.catering-modal.medium-modal {
+  max-width: 600px;
+}
+
+.catering-modal.small-modal {
+  max-width: 400px;
+}
+
+.catering-profile-modal {
+  max-width: 900px;
+}
+
+.catering-confirm-modal {
+  max-width: 450px;
+}
+
+.catering-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.catering-modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.catering-modal-progress {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.catering-modal-progress span {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 20px;
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+.catering-modal-progress span.active {
+  background: #2563eb;
+  color: white;
+}
+
+.catering-modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 4px;
+}
+
+.catering-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  max-height: calc(90vh - 140px);
+}
+
+.catering-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* ==================== FORMS ==================== */
+.catering-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.catering-form-section {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.catering-form-section h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.catering-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.catering-form-group {
+  margin-bottom: 16px;
+}
+
+.catering-form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.catering-form-input,
+.catering-form-select,
+.catering-form-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.catering-form-input:focus,
+.catering-form-select:focus,
+.catering-form-textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.catering-form-input.error,
+.catering-form-select.error {
+  border-color: #ef4444;
+}
+
+.catering-form-error {
+  font-size: 12px;
+  color: #ef4444;
+  margin-top: 4px;
+  display: block;
+}
+
+.catering-form-hint {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 4px;
+  display: block;
+}
+
+.catering-auto-fill-section {
+  background: #eff6ff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.catering-auto-fill-section h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #1e40af;
+}
+
+.catering-auto-field {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* ==================== UPLOAD AREA ==================== */
+.catering-upload-area {
+  border: 2px dashed #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 24px;
+}
+
+.catering-upload-area:hover {
+  border-color: #2563eb;
+  background: #f9fafb;
+}
+
+.catering-upload-icon {
+  font-size: 40px;
+  color: #9ca3af;
+  margin-bottom: 12px;
+}
+
+.catering-upload-preview {
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto;
+}
+
+.catering-upload-hint {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 8px;
+}
+
+.catering-upload-progress {
+  margin-bottom: 24px;
+}
+
+.catering-progress-bar {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.catering-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s;
+  background: #2563eb;
+}
+
+/* ==================== PROFILE VIEW ==================== */
+.catering-profile {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.catering-profile-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.catering-profile-avatar {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.catering-profile-avatar img,
+.catering-profile-avatar-placeholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.catering-profile-avatar-placeholder {
+  background: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+}
+
+.catering-profile-bookmark {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: white;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #fbbf24;
+  padding: 4px;
+}
+
+.catering-profile-name {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.catering-profile-title {
+  margin: 0 0 16px 0;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.catering-profile-badges {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.catering-profile-badge {
+  padding: 6px 12px;
+  background: #f3f4f6;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #6b7280;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.catering-profile-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 12px;
+}
+
+.catering-profile-stat {
+  text-align: center;
+}
+
+.catering-profile-stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.catering-profile-stat-label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.catering-profile-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.catering-profile-section {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.catering-profile-section h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.catering-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.catering-profile-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.catering-profile-grid label {
+  font-size: 11px;
+  color: #9ca3af;
+  text-transform: uppercase;
+}
+
+.catering-profile-grid span {
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.catering-profile-skills,
+.catering-profile-certifications {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.catering-skill-tag {
+  padding: 4px 12px;
+  background: white;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #374151;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+.catering-skill-tag.highlight {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+/* ==================== STATUS CONTROLS ==================== */
+.catering-status-controls {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.catering-status-controls h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.catering-status-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.catering-status-btn {
+  padding: 8px 16px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.catering-status-btn.active {
+  background: #10b981;
+  border-color: #10b981;
+  color: white;
+}
+
+.catering-status-btn.onleave {
+  background: #f59e0b;
+  border-color: #f59e0b;
+  color: white;
+}
+
+.catering-status-note {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ==================== POSITION & DEPARTMENT LISTS ==================== */
+.catering-positions-list,
+.catering-departments-list,
+.catering-salary-grades-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.catering-position-item,
+.catering-department-item,
+.catering-salary-grade-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s;
+}
+
+.catering-position-item:hover,
+.catering-department-item:hover,
+.catering-salary-grade-item:hover {
+  border-color: #2563eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.catering-position-info h4,
+.catering-department-info h4,
+.catering-salary-grade-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.catering-position-info p,
+.catering-department-info p,
+.catering-salary-grade-info p {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.catering-position-info small,
+.catering-department-info small,
+.catering-salary-grade-info small {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.catering-position-actions,
+.catering-department-actions,
+.catering-salary-grade-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ==================== COMPLIANCE, BENEFITS, REPORTS MODALS ==================== */
+.catering-compliance-summary,
+.catering-benefits-summary,
+.catering-reports-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.catering-compliance-stat,
+.catering-benefits-card,
+.catering-report-card {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+.catering-compliance-stat span,
+.catering-benefits-card h4,
+.catering-report-card h4 {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.catering-compliance-stat strong,
+.catering-benefits-card p strong,
+.catering-report-card .report-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.catering-compliance-stat.warning strong {
+  color: #dc2626;
+}
+
+.catering-report-card.success .report-number {
+  color: #10b981;
+}
+
+.catering-report-card.warning .report-number {
+  color: #f59e0b;
+}
+
+.catering-report-card.info .report-number {
+  color: #3b82f6;
+}
+
+.catering-compliance-table-container,
+.catering-benefits-table-container {
+  overflow-x: auto;
+  margin-top: 16px;
+}
+
+.catering-compliance-table,
+.catering-benefits-table,
+.catering-report-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.catering-compliance-table th,
+.catering-benefits-table th,
+.catering-report-table th {
+  background: #f3f4f6;
+  padding: 12px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.catering-compliance-table td,
+.catering-benefits-table td,
+.catering-report-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 13px;
+}
+
+.catering-compliance-table td.missing {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+.catering-compliance-table td.provided {
+  color: #10b981;
+}
+
+.compliance-status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.compliance-status.compliant {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.compliance-status.missing {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.benefit-status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.benefit-status.enrolled,
+.benefit-status.eligible {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.benefit-status.not-eligible {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.catering-reports-details {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.catering-reports-section h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 12px;
+}
+
+.catering-reports-section p {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 8px 0;
+}
+
+.progress-bar {
+  width: 100px;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #2563eb;
+  border-radius: 3px;
+}
+
+/* ==================== LOADING STATES ==================== */
+.catering-loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px;
+  color: #6b7280;
+}
+
+/* ==================== EMPTY STATES ==================== */
+.catering-table-empty {
+  text-align: center;
+  padding: 60px;
+}
+
+.catering-empty-state {
+  text-align: center;
+}
+
+.catering-empty-icon {
+  font-size: 64px;
+  color: #e5e7eb;
+  margin-bottom: 16px;
+}
+
+.catering-empty-state h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #374151;
+}
+
+.catering-empty-state p {
+  margin: 0 0 20px 0;
+  color: #9ca3af;
+}
+
+/* ==================== NOTIFICATION ==================== */
+.catering-notification {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  background: white;
+  border-radius: 12px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1100;
+  animation: slideIn 0.3s ease;
+}
+
+.catering-notification.success {
+  border-left: 4px solid #10b981;
+}
+
+.catering-notification.error {
+  border-left: 4px solid #ef4444;
+}
+
+.catering-notification.info {
+  border-left: 4px solid #3b82f6;
+}
+
+.catering-notification-icon {
+  font-size: 20px;
+}
+
+.catering-notification.success .catering-notification-icon {
+  color: #10b981;
+}
+
+.catering-notification.error .catering-notification-icon {
+  color: #ef4444;
+}
+
+.catering-notification.info .catering-notification-icon {
+  color: #3b82f6;
+}
+
+.catering-notification-message {
+  font-size: 14px;
+  color: #374151;
+}
+
+.catering-notification-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 4px;
+}
+
+/* ==================== SUCCESS ANIMATION ==================== */
+.catering-success-animation {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #10b981;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1100;
+  animation: slideUp 0.3s ease, fadeOut 0.3s ease 1.7s forwards;
+}
+
+/* ==================== ANIMATIONS ==================== */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .catering-header {
+    padding: 0 16px;
+  }
+  
+  .catering-search-input {
+    width: 180px;
+  }
+  
+  .catering-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .catering-filter-tabs {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .catering-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .catering-badge-group {
+    margin-left: 0;
+  }
+  
+  .catering-form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .catering-modal {
+    width: 95%;
+    margin: 16px;
+  }
+  
+  .catering-modal-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .catering-modal-progress {
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
+  
+  .catering-pagination {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .catering-compliance-summary,
+  .catering-benefits-summary,
+  .catering-reports-summary {
+    grid-template-columns: 1fr;
+  }
+  
+  .catering-table th,
+  .catering-table td {
+    padding: 12px;
+  }
+  
+  .catering-archive-item {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .catering-archive-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .catering-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .catering-quick-actions {
+    justify-content: center;
+  }
+  
+  .catering-header-right {
+    gap: 10px;
+  }
+  
+  .catering-date {
+    display: none;
+  }
+  
+  .catering-search-input {
+    width: 160px;
+  }
+  
+  .catering-profile-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .catering-status-buttons {
+    flex-direction: column;
+  }
+  
+  .catering-status-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.catering-employee-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.catering-employee-avatar {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    position: relative;
+    overflow: hidden;
+}
+
+.catering-employee-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #2563eb;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.catering-employee-bookmark {
+    display: none;
+}
+
+.catering-employee-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.catering-employee-name {
+    font-weight: 600;
+    color: #111827;
+}
+
+.catering-employee-id {
+    font-size: 12px;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+
+/* Add to the end of Staff_Management.css - Dark Mode Support */
+
+/* ==================== DARK MODE VARIABLES ==================== */
+.dark-mode {
+  /* Background Colors */
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #13172b;
+  --bg-tertiary: #1a1f38;
+  --bg-hover: #1a1f38;
+  --card-bg: #13172b;
+  --header-bg: #13172b;
+  --table-header-bg: #0a0e1a;
+  --modal-bg: #13172b;
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #e2e8f0;
+  --text-muted: #8b93a8;
+  --text-disabled: #5a628a;
+  
+  /* Border Colors */
+  --border-color: #1e2340;
+  --border-light: #2a2f4e;
+  
+  /* Status Colors */
+  --success: #34d399;
+  --success-bg: rgba(52, 211, 153, 0.15);
+  --warning: #fbbf24;
+  --warning-bg: rgba(251, 191, 36, 0.15);
+  --danger: #f87171;
+  --danger-bg: rgba(248, 113, 113, 0.15);
+  --info: #60a5fa;
+  --info-bg: rgba(96, 165, 250, 0.15);
+  
+  /* Gradient Colors */
+  --accent-gradient: linear-gradient(135deg, #3b82f6, #60a5fa);
+  --accent-glow: rgba(59, 130, 246, 0.2);
+  
+  /* Shadow */
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+}
+
+/* ==================== DARK MODE BODY ==================== */
+.dark-mode body {
+  background: #0a0e1a;
+}
+
+.dark-mode .catering-layout {
+  background: #0a0e1a;
+}
+
+/* ==================== DARK MODE HEADER ==================== */
+.dark-mode .catering-header {
+  background: #13172b;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid #1e2340;
+}
+
+.dark-mode .catering-logo-text h1 {
+  color: #ffffff;
+}
+
+.dark-mode .catering-logo-text span {
+  color: #8b93a8;
+}
+
+.dark-mode .catering-date {
+  color: #8b93a8;
+}
+
+.dark-mode .catering-search-input {
+  background: #1a1f38;
+  border-color: #2a2f4e;
+  color: #ffffff;
+}
+
+.dark-mode .catering-search-input::placeholder {
+  color: #5a628a;
+}
+
+.dark-mode .catering-search-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.dark-mode .catering-search-icon {
+  color: #5a628a;
+}
+
+.dark-mode .catering-header-icon {
+  color: #8b93a8;
+}
+
+.dark-mode .catering-header-icon:hover {
+  background: #1a1f38;
+  color: #3b82f6;
+}
+
+/* ==================== DARK MODE STATS CARDS ==================== */
+.dark-mode .catering-stat-card {
+  background: #13172b;
+  border: 1px solid #1e2340;
+  box-shadow: var(--shadow-sm);
+}
+
+.dark-mode .catering-stat-icon {
+  background: #1a7ab520;
+  color: #60a5fa;
+}
+
+.dark-mode .catering-stat-content h3 {
+  color: #ffffff;
+}
+
+.dark-mode .catering-stat-content span {
+  color: #8b93a8;
+}
+
+.dark-mode .catering-stat-change {
+  color: #5a628a;
+}
+
+/* ==================== DARK MODE QUICK ACTIONS ==================== */
+.dark-mode .catering-quick-actions {
+  border-bottom-color: #1e2340;
+}
+
+.dark-mode .catering-quick-action {
+  background: #1a1f38;
+  border-color: #2a2f4e;
+}
+
+.dark-mode .catering-quick-action:hover {
+  background: #2a2f4e;
+  border-color: #3b82f6;
+}
+
+.dark-mode .catering-quick-action span {
+  color: #e2e8f0;
+}
+
+.dark-mode .catering-quick-icon {
+  color: #60a5fa;
+}
+
+/* ==================== DARK MODE ARCHIVE SECTION ==================== */
+.dark-mode .catering-archive-section {
+  background: #13172b;
+  border: 1px solid #1e2340;
+}
+
+.dark-mode .catering-archive-header {
+  background: #0a0e1a;
+  border-bottom-color: #1e2340;
+}
+
+.dark-mode .catering-archive-header h3 {
+  color: #ffffff;
+}
+
+.dark-mode .catering-archive-count {
+  background: #1a1f38;
+  color: #8b93a8;
+}
+
+.dark-mode .catering-archive-item {
+  border-bottom-color: #1e2340;
+}
+
+.dark-mode .catering-archive-details h4 {
+  color: #ffffff;
+}
+
+.dark-mode .catering-archive-details p {
+  color: #8b93a8;
+}
+
+.dark-mode .catering-archive-restore-btn {
+  background: #34d39920;
+  color: #34d399;
+}
+
+.dark-mode .catering-archive-restore-btn:hover {
+  background: #34d39930;
+}
+
+.dark-mode .catering-archive-delete-btn {
+  background: #f8717120;
+  color: #f87171;
+}
+
+.dark-mode .catering-archive-delete-btn:hover {
+  background: #f8717130;
+}
+
+.dark-mode .catering-archive-empty {
+  color: #5a628a;
+}
+
+/* ==================== DARK MODE FILTERS ==================== */
+.dark-mode .catering-filters {
+  background: #13172b;
+  border: 1px solid #1e2340;
+}
+
+.dark-mode .catering-filter-tabs {
+  background: #1a1f38;
+}
+
+.dark-mode .catering-filter-tab {
+  color: #8b93a8;
+}
+
+.dark-mode .catering-filter-tab.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.dark-mode .catering-filter-select {
+  background: #1a1f38;
+  border-color: #2a2f4e;
+  color: #ffffff;
+}
+
+.dark-mode .catering-badge {
+  background: #1a1f38;
+  color: #8b93a8;
+}
+
+/* ==================== DARK MODE BULK ACTIONS ==================== */
+.dark-mode .catering-bulk-actions-bar {
+  background: #3b82f6;
+}
+
+/* ==================== DARK MODE TABLE ==================== */
+.dark-mode .catering-table-card {
+  background: #13172b;
+  border: 1px solid #1e2340;
+}
+
+.dark-mode .catering-table-header {
+  border-bottom-color: #1e2340;
+}
+
+.dark-mode .catering-table-title h2 {
+  color: #ffffff;
+}
+
+.dark-mode .catering-table-count {
+  color: #8b93a8;
+}
+
+.dark-mode .catering-btn {
+  background: #1a1f38;
+  border-color: #2a2f4e;
+  color: #e2e8f0;
+}
+
+.dark-mode .catering-btn:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.dark-mode .catering-btn-primary {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+
+.dark-mode .catering-btn-primary:hover {
+  background: #2563eb;
+}
+
+.dark-mode .catering-table th {
+  background: #0a0e1a;
+  color: #8b93a8;
+  border-bottom-color: #1e2340;
+}
+
+.dark-mode .catering-table td {
+  border-bottom-color: #1e2340;
+  color: #e2e8f0;
+}
+
+.dark-mode .catering-table tr:hover {
+  background: #1a1f38;
+}
+
+.dark-mode .catering-table tr.selected {
+  background: #1a7ab520;
+}
+
+/* ==================== DARK MODE EMPLOYEE CELL ==================== */
+.dark-mode .catering-employee-name {
+  color: #ffffff;
+}
+
+.dark-mode .catering-employee-id {
+  color: #5a628a;
+}
+
+/* ==================== DARK MODE BADGES & TAGS ==================== */
+.dark-mode .catering-tag {
+  background: #1a1f38;
+  color: #e2e8f0;
+}
+
+.dark-mode .catering-role-badge {
+  background: #1a1f38;
+  color: #8b93a8;
+}
+
+/* ==================== DARK MODE STATUS DROPDOWN ==================== */
+.dark-mode .catering-status-dropdown {
+  background: #1a1f38;
+  border-color: #2a2f4e;
+  box-shadow: var(--shadow-lg);
+}
+
+.dark-mode .catering-status-dropdown-header {
+  background: #0a0e1a;
+  border-bottom-color: #2a2f4e;
+  color: #8b93a8;
+}
+
+.dark-mode .catering-status-option {
+  color: #e2e8f0;
+}
+
+.dark-mode .catering-status-option:hover {
+  background: #2a2f4e;
+}
+
+.dark-mode .catering-status-option.active {
+  background: #3b82f620;
+  color: #60a5fa;
+}
+
+/* ==================== DARK MODE CONTACT INFO ==================== */
+.dark-mode .catering-contact-info span {
+  color: #8b93a8;
+}
+
+/* ==================== DARK MODE ACTIONS ==================== */
+.dark-mode .catering-action-btn {
+  background: #1a1f38;
+  color: #8b93a8;
+}
+
+.dark-mode .catering-action-btn.view:hover {
+  background: #34d39920;
+  color: #34d399;
+}
+
+.dark-mode .catering-action-btn.edit:hover {
+  background: #3b82f620;
+  color: #60a5fa;
+}
+
+.dark-mode .catering-action-btn.bookmark:hover {
+  background: #fbbf2420;
+  color: #fbbf24;
+}
+
+.dark-mode .catering-action-btn.delete:hover {
+  background: #f8717120;
+  color: #f87171;
+}
+
+/* ==================== DARK MODE PAGINATION ==================== */
+.dark-mode .catering-pagination {
+  border-top-color: #1e2340;
+}
+
+.dark-mode .catering-pagination-info {
+  color: #8b93a8;
+}
+
+.dark-mode .catering-pagination-btn {
+  background: #1a1f38;
+  border-color: #2a2f4e;
+  color: #e2e8f0;
+}
+
+.dark-mode .catering-pagination-btn:hover:not(:disabled) {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.dark-mode .catering-pagination-btn.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+
+/* ==================== DARK MODE MODALS ==================== */
+.dark-mode .catering-modal-overlay {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+.dark-mode .catering-modal {
+  background: #13172b;
+  border: 1px solid #1e2340;
+}
+
+.dark-mode .catering-modal-header {
+  border-bottom-color: #1e2340;
+}
+
+.dark-mode .catering-modal-header h2 {
+  color: #ffffff;
+}
+
+.dark-mode .catering-modal-progress span {
+  background: #1a1f38;
+  color: #8b93a8;
+}
+
+.dark-mode .catering-modal-progress span.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.dark-mode .catering-modal-close {
+  color: #8b93a8;
+}
+
+.dark-mode .catering-modal-footer {
+  border-top-color: #1e2340;
+}
+
+/* ==================== DARK MODE FORMS ==================== */
+.dark-mode .catering-form-section {
+  background: #0a0e1a;
+}
+
+.dark-mode .catering-form-section h3 {
+  color: #ffffff;
+}
+
+.dark-mode .catering-form-group label {
+  color: #e2e8f0;
+}
+
+.dark-mode .catering-form-input,
+.dark-mode .catering-form-select,
+.dark-mode .catering-form-textarea {
+  background: #1a1f38;
+  border-color: #2a2f4e;
+  color: #ffffff;
+}
+
+.dark-mode .catering-form-input::placeholder,
+.dark-mode .catering-form-textarea::placeholder {
+  color: #5a628a;
+}
+
+.dark-mode .catering-form-input:focus,
+.dark-mode .catering-form-select:focus,
+.dark-mode .catering-form-textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.dark-mode .catering-form-hint {
+  color: #5a628a;
+}
+
+.dark-mode .catering-auto-fill-section {
+  background: #1a7ab520;
+}
+
+.dark-mode .catering-auto-fill-section h4 {
+  color: #60a5fa;
+}
+
+.dark-mode .catering-auto-field {
+  background: #1a1f38;
+  color: #8b93a8;
+}
+
+/* ==================== DARK MODE UPLOAD AREA ==================== */
+.dark-mode .catering-upload-area {
+  border-color: #2a2f4e;
+}
+
+.dark-mode .catering-upload-area:hover {
+  border-color: #3b82f6;
+  background: #1a1f38;
+}
+
+.dark-mode .catering-upload-icon {
+  color: #5a628a;
+}
+
+/* ==================== DARK MODE PROFILE VIEW ==================== */
+.dark-mode .catering-profile-name {
+  color: #ffffff;
+}
+
+.dark-mode .catering-profile-title {
+  color: #8b93a8;
+}
+
+.dark-mode .catering-profile-badge {
+  background: #1a1f38;
+  color: #8b93a8;
+}
+
+.dark-mode .catering-profile-stats {
+  background: #0a0e1a;
+}
+
+.dark-mode .catering-profile-stat-value {
+  color: #ffffff;
+}
+
+.dark-mode .catering-profile-stat-label {
+  color: #8b93a8;
+}
+
+.dark-mode .catering-profile-section {
+  background: #0a0e1a;
+}
+
+.dark-mode .catering-profile-section h3 {
+  color: #ffffff;
+}
+
+.dark-mode .catering-profile-grid label {
+  color: #5a628a;
+}
+
+.dark-mode .catering-profile-grid span {
+  color: #e2e8f0;
+}
+
+.dark-mode .catering-skill-tag {
+  background: #1a1f38;
+  border-color: #2a2f4e;
+  color: #e2e8f0;
+}
+
+.dark-mode .catering-skill-tag.highlight {
+  background: #3b82f6;
+  color: white;
+}
+
+/* ==================== DARK MODE STATUS CONTROLS ==================== */
+.dark-mode .catering-status-controls {
+  background: #0a0e1a;
+}
+
+.dark-mode .catering-status-controls h3 {
+  color: #ffffff;
+}
+
+.dark-mode .catering-status-btn {
+  background: #1a1f38;
+  border-color: #2a2f4e;
+  color: #e2e8f0;
+}
+
+.dark-mode .catering-status-note {
+  color: #8b93a8;
+}
+
+/* ==================== DARK MODE POSITION/DEPARTMENT LISTS ==================== */
+.dark-mode .catering-position-item,
+.dark-mode .catering-department-item,
+.dark-mode .catering-salary-grade-item {
+  background: #1a1f38;
+  border-color: #2a2f4e;
+}
+
+.dark-mode .catering-position-item:hover,
+.dark-mode .catering-department-item:hover,
+.dark-mode .catering-salary-grade-item:hover {
+  border-color: #3b82f6;
+}
+
+.dark-mode .catering-position-info h4,
+.dark-mode .catering-department-info h4,
+.dark-mode .catering-salary-grade-info h4 {
+  color: #ffffff;
+}
+
+.dark-mode .catering-position-info p,
+.dark-mode .catering-department-info p {
+  color: #8b93a8;
+}
+
+/* ==================== DARK MODE COMPLIANCE/BENEFITS/REPORTS ==================== */
+.dark-mode .catering-compliance-stat,
+.dark-mode .catering-benefits-card,
+.dark-mode .catering-report-card {
+  background: #0a0e1a;
+  border: 1px solid #1e2340;
+}
+
+.dark-mode .catering-compliance-stat span,
+.dark-mode .catering-benefits-card h4,
+.dark-mode .catering-report-card h4 {
+  color: #8b93a8;
+}
+
+.dark-mode .catering-compliance-stat strong,
+.dark-mode .catering-report-card .report-number {
+  color: #ffffff;
+}
+
+.dark-mode .catering-compliance-table th,
+.dark-mode .catering-benefits-table th,
+.dark-mode .catering-report-table th {
+  background: #0a0e1a;
+  color: #8b93a8;
+}
+
+.dark-mode .catering-compliance-table td,
+.dark-mode .catering-benefits-table td,
+.dark-mode .catering-report-table td {
+  border-bottom-color: #1e2340;
+  color: #e2e8f0;
+}
+
+/* ==================== DARK MODE EMPTY STATES ==================== */
+.dark-mode .catering-empty-icon {
+  color: #2a2f4e;
+}
+
+.dark-mode .catering-empty-state h3 {
+  color: #ffffff;
+}
+
+.dark-mode .catering-empty-state p {
+  color: #8b93a8;
+}
+
+/* ==================== DARK MODE NOTIFICATION ==================== */
+.dark-mode .catering-notification {
+  background: #1a1f38;
+  border: 1px solid #2a2f4e;
+}
+
+.dark-mode .catering-notification-message {
+  color: #e2e8f0;
+}
+
+/* ==================== DARK MODE SUCCESS ANIMATION ==================== */
+.dark-mode .catering-success-animation {
+  background: #10b981;
+}
+
+/* ==================== DARK MODE SCROLLBAR ==================== */
+.dark-mode ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark-mode ::-webkit-scrollbar-track {
+  background: #1a1f38;
+  border-radius: 8px;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+  background: #2a2f4e;
+  border-radius: 8px;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
+}
+
+/* ==================== DARK MODE SELECT DROPDOWN ==================== */
+.dark-mode .catering-filter-select option {
+  background: #1a1f38;
+  color: #ffffff;
+}
+
+/* ==================== DARK MODE CHECKBOX ==================== */
+.dark-mode .catering-table input[type="checkbox"] {
+  accent-color: #3b82f6;
+}
+
+/* ==================== DARK MODE LOADING SPINNER ==================== */
+.dark-mode .catering-loading-spinner {
+  color: #8b93a8;
+}
+
+/* ==================== TRANSITIONS ==================== */
+.catering-layout,
+.catering-header,
+.catering-stat-card,
+.catering-table-card,
+.catering-modal,
+.catering-form-input,
+.catering-btn,
+.catering-table th,
+.catering-table td,
+.catering-filter-tab,
+.catering-quick-action {
+  transition: all 0.3s ease;
+}

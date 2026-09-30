@@ -1,0 +1,2 @@
+<?php
+namespace App\Policies;class BasePolicy{public function before($user,string $ability):?bool{return $user->hasRole('super-admin')?true:null;}public function viewAny($user):bool{return true;}public function view($user,$model):bool{return true;}public function create($user):bool{return !$user->hasRole('customer');}public function update($user,$model):bool{return !$user->hasRole('customer');}public function delete($user,$model):bool{return $user->hasAnyRole(['super-admin','admin']);}}

@@ -1,0 +1,2 @@
+<?php
+namespace App\Http\Requests;use Illuminate\Foundation\Http\FormRequest;class LeaveRequestForm extends FormRequest{public function authorize():bool{return true;}public function rules():array{return ['employee_id'=>'nullable|integer|exists:employees,employee_id','request_type'=>'required|in:leave,day_off,sick_leave','start_date'=>'required|date','end_date'=>'required|date|after_or_equal:start_date','reason'=>'nullable'];}}

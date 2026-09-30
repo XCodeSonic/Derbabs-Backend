@@ -1,0 +1,3 @@
+<?php
+use Illuminate\Database\Migrations\Migration;use Illuminate\Database\Schema\Blueprint;use Illuminate\Support\Facades\Schema;
+return new class extends Migration{public function up():void{Schema::create('orders',function(Blueprint $table){$table->id('order_id');$table->string('order_number')->unique();$table->foreignId('booking_id')->constrained('bookings','booking_id')->cascadeOnDelete();$table->enum('status',['pending','preparing','ready','ongoing','completed','cancelled'])->default('pending')->index();$table->timestamps();$table->softDeletes();});}public function down():void{Schema::dropIfExists('orders');}};
