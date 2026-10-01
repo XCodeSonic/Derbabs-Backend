@@ -1,0 +1,86 @@
+body.light-mode {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafd;
+  --bg-tertiary: #f1f5f9;
+  --bg-gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-tertiary: #64748b;
+  --text-muted: #94a3b8;
+  --accent-primary: #2563eb;
+  --accent-secondary: #4f46e5;
+  --accent-glow: rgba(37, 99, 235, 0.15);
+  --border-color: #e2e8f0;
+  --border-dark: #cbd5e1;
+  --shadow-color: rgba(0, 0, 0, 0.05);
+  --shadow-lg: rgba(0, 0, 0, 0.1);
+  --hover-bg: #f1f5f9;
+  --active-bg: linear-gradient(135deg, #e6f0ff 0%, #f0f0ff 100%);
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --success-color: #059669;
+  --warning-color: #d97706;
+  --danger-color: #dc2626;
+  --info-color: #2563eb;
+  --profile-bg: #f8fafc;
+}
+
+/* src/components/Components/styles/light-mode.css */
+.catering-layout.light-mode {
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f9fafb;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --border-color: #e5e7eb;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --hover-bg: #f3f4f6;
+  --header-bg: #ffffff;
+  --input-bg: #ffffff;
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+}
+
+/* These styles will be applied when light mode is active */
+.catering-layout.light-mode {
+  background: var(--bg-primary);
+}
+
+.catering-layout.light-mode .catering-header {
+  background: var(--header-bg);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.catering-layout.light-mode .catering-stat-card,
+.catering-layout.light-mode .catering-table-card,
+.catering-layout.light-mode .catering-archive-section,
+.catering-layout.light-mode .catering-filters,
+.catering-layout.light-mode .catering-quick-action {
+  background: var(--bg-secondary);
+  box-shadow: var(--card-shadow);
+}
+
+.catering-layout.light-mode .catering-modal {
+  background: var(--bg-secondary);
+}
+
+.catering-layout.light-mode .catering-form-section,
+.catering-layout.light-mode .catering-profile-section,
+.catering-layout.light-mode .catering-status-controls {
+  background: var(--bg-tertiary);
+}
+
+.catering-layout.light-mode .catering-table th {
+  background: var(--bg-tertiary);
+}
+
+.catering-layout.light-mode .catering-table tr:hover {
+  background: var(--hover-bg);
+}
+
+.catering-layout.light-mode .catering-form-input,
+.catering-layout.light-mode .catering-form-select,
+.catering-layout.light-mode .catering-form-textarea {
+  background: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}

@@ -1,0 +1,790 @@
+/* ReportsAnalytics.css - Updated with Finance Dashboard Dark Mode Colors */
+
+/* Main Container */
+.reports-container {
+  background: #f8fafc;
+  min-height: 100vh;
+  transition: background-color 0.3s ease;
+}
+
+/* Dark Mode Container */
+.dark-mode .reports-container {
+  background: #0a0e1a !important;
+}
+
+.reports-content {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 24px 32px;
+  transition: background-color 0.3s ease;
+}
+
+.dark-mode .reports-content {
+  background: #0a0e1a !important;
+}
+
+/* Header Section */
+.reports-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.reports-title {
+  margin: 0;
+  font-weight: 600;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+  transition: color 0.3s ease;
+}
+
+.dark-mode .reports-title {
+  color: #ffffff !important;
+}
+
+.reports-subtitle {
+  margin-top: 4px;
+  margin-bottom: 0;
+  font-size: 14px;
+  color: #64748b;
+  transition: color 0.3s ease;
+}
+
+.dark-mode .reports-subtitle {
+  color: #8b93a8 !important;
+}
+
+.date-range-select {
+  width: 120px;
+}
+
+.date-picker {
+  border-radius: 8px;
+}
+
+.export-btn,
+.refresh-btn {
+  border-radius: 8px;
+}
+
+/* Dark Mode Select, DatePicker, Buttons */
+.dark-mode .ant-select-selector,
+.dark-mode .ant-picker {
+  background: #13172b !important;
+  border-color: #1e2340 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .ant-select-arrow,
+.dark-mode .ant-picker-suffix {
+  color: #8b93a8 !important;
+}
+
+.dark-mode .ant-picker-input > input {
+  color: #ffffff !important;
+}
+
+.dark-mode .ant-picker-input > input::placeholder {
+  color: #8b93a8 !important;
+}
+
+.dark-mode .ant-btn {
+  background: #13172b !important;
+  border-color: #1e2340 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .ant-btn:hover {
+  border-color: #3b82f6 !important;
+  color: #3b82f6 !important;
+}
+
+.dark-mode .ant-btn-primary {
+  background: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+  color: white !important;
+}
+
+/* Metrics Row */
+.metrics-row {
+  margin-bottom: 16px;
+}
+
+/* Metric Card */
+.metric-card {
+  border-radius: 16px;
+  border: 1px solid #eef2ff;
+  background: #ffffff;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .metric-card {
+  background: #13172b !important;
+  border-color: #1e2340 !important;
+}
+
+.metric-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.dark-mode .metric-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.metric-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.metric-card-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #64748b;
+  transition: color 0.3s ease;
+}
+
+.dark-mode .metric-card-title {
+  color: #8b93a8 !important;
+}
+
+.metric-card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 8px;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+}
+
+.dark-mode .metric-card-value {
+  color: #ffffff !important;
+}
+
+.metric-card-subtitle {
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+  color: #64748b;
+  transition: color 0.3s ease;
+}
+
+.dark-mode .metric-card-subtitle {
+  color: #8b93a8 !important;
+}
+
+.metric-card-trend {
+  margin-top: 12px;
+  border-radius: 16px;
+  font-size: 11px;
+}
+
+.metric-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+/* Tabs Card */
+.tabs-card {
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 0;
+}
+
+.dark-mode .tabs-card {
+  background: #13172b !important;
+  border-color: #1e2340 !important;
+}
+
+.tabs-card .ant-card-body {
+  padding: 0;
+}
+
+/* Tabs Styling */
+.reports-tabs .ant-tabs-nav {
+  margin-bottom: 0;
+  padding: 0 20px;
+}
+
+.dark-mode .reports-tabs .ant-tabs-nav {
+  background: #13172b !important;
+}
+
+.reports-tabs .ant-tabs-tab {
+  padding: 12px 20px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.dark-mode .reports-tabs .ant-tabs-tab {
+  color: #8b93a8 !important;
+}
+
+.dark-mode .reports-tabs .ant-tabs-tab-active {
+  color: #3b82f6 !important;
+}
+
+.reports-tabs .ant-tabs-ink-bar {
+  background: #3b82f6;
+  height: 2px;
+}
+
+/* Tab Content */
+.tab-content {
+  padding: 20px 24px;
+}
+
+.dark-mode .tab-content {
+  background: #0a0e1a;
+}
+
+/* Cards inside tabs */
+.chart-card,
+.stats-card,
+.table-card,
+.alerts-card,
+.health-card,
+.list-card {
+  border-radius: 16px;
+}
+
+.dark-mode .chart-card,
+.dark-mode .stats-card,
+.dark-mode .table-card,
+.dark-mode .alerts-card,
+.dark-mode .health-card,
+.dark-mode .list-card {
+  background: #13172b !important;
+  border-color: #1e2340 !important;
+}
+
+.chart-card .ant-card-head,
+.stats-card .ant-card-head,
+.table-card .ant-card-head,
+.alerts-card .ant-card-head,
+.health-card .ant-card-head,
+.list-card .ant-card-head {
+  border-bottom: 1px solid #eef2ff;
+  padding: 0 20px;
+}
+
+.dark-mode .chart-card .ant-card-head,
+.dark-mode .stats-card .ant-card-head,
+.dark-mode .table-card .ant-card-head,
+.dark-mode .alerts-card .ant-card-head,
+.dark-mode .health-card .ant-card-head,
+.dark-mode .list-card .ant-card-head {
+  border-bottom-color: #1e2340 !important;
+}
+
+.chart-card .ant-card-head-title,
+.stats-card .ant-card-head-title,
+.table-card .ant-card-head-title,
+.alerts-card .ant-card-head-title,
+.health-card .ant-card-head-title,
+.list-card .ant-card-head-title {
+  font-weight: 600;
+  font-size: 15px;
+  color: #1e293b;
+  padding: 16px 0;
+}
+
+.dark-mode .chart-card .ant-card-head-title,
+.dark-mode .stats-card .ant-card-head-title,
+.dark-mode .table-card .ant-card-head-title,
+.dark-mode .alerts-card .ant-card-head-title,
+.dark-mode .health-card .ant-card-head-title,
+.dark-mode .list-card .ant-card-head-title {
+  color: #ffffff !important;
+}
+
+/* Table Styling */
+.ant-table-thead > tr > th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  border-bottom: 1px solid #eef2ff;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .ant-table-thead > tr > th {
+  background: #0a0e1a !important;
+  color: #8b93a8 !important;
+  border-bottom-color: #1e2340 !important;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .ant-table-tbody > tr > td {
+  border-bottom-color: #1e2340 !important;
+  color: #e2e8f0 !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: #f8fafc;
+}
+
+.dark-mode .ant-table-tbody > tr:hover > td {
+  background: #1a1f38 !important;
+}
+
+.dark-mode .ant-table {
+  background: #13172b !important;
+}
+
+/* Table Text Colors */
+.sales-amount {
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+.dark-mode .sales-amount {
+  color: #60a5fa !important;
+}
+
+.revenue-amount {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.dark-mode .revenue-amount {
+  color: #ffffff !important;
+}
+
+.employee-avatar {
+  background: #3b82f6;
+}
+
+.gross-pay {
+  font-weight: 500;
+}
+
+.net-pay {
+  font-weight: 600;
+  color: #10b981;
+}
+
+.dark-mode .net-pay {
+  color: #34d399 !important;
+}
+
+.customer-spent {
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+.dark-mode .customer-spent {
+  color: #60a5fa !important;
+}
+
+.event-revenue {
+  color: #3b82f6;
+}
+
+.dark-mode .event-revenue {
+  color: #60a5fa !important;
+}
+
+.event-profit {
+  font-weight: 600;
+  color: #10b981;
+}
+
+.dark-mode .event-profit {
+  color: #34d399 !important;
+}
+
+/* Stock Level Styles */
+.stock-level-container {
+  min-width: 150px;
+}
+
+.stock-level-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.stock-level-text {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.dark-mode .stock-level-text {
+  color: #8b93a8 !important;
+}
+
+.stock-level-percent {
+  font-size: 11px;
+}
+
+.low-stock {
+  color: #ef4444;
+}
+
+.dark-mode .low-stock {
+  color: #f87171 !important;
+}
+
+.healthy-stock {
+  color: #10b981;
+}
+
+.dark-mode .healthy-stock {
+  color: #34d399 !important;
+}
+
+/* Satisfaction Rate */
+.satisfaction-rate {
+  font-size: 14px;
+}
+
+/* Alert Styles */
+.critical-alert {
+  margin-top: 12px;
+  border-radius: 8px;
+}
+
+.dark-mode .critical-alert {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: #f87171 !important;
+}
+
+.outstanding-alert {
+  margin-top: 12px;
+  border-radius: 8px;
+}
+
+.dark-mode .outstanding-alert {
+  background: rgba(245, 158, 11, 0.15) !important;
+  border-color: #fbbf24 !important;
+}
+
+/* Stock Health */
+.stock-health {
+  margin-bottom: 20px;
+}
+
+.stock-health-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.dark-mode .stock-health-header .ant-typography {
+  color: #ffffff !important;
+}
+
+.stock-health-value {
+  color: #f59e0b;
+}
+
+.dark-mode .stock-health-value {
+  color: #fbbf24 !important;
+}
+
+/* Financial Health */
+.health-stats {
+  text-align: center;
+}
+
+.profit-margin {
+  font-size: 42px;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.dark-mode .profit-margin {
+  color: #34d399 !important;
+}
+
+.dark-mode .health-stats .ant-typography-secondary {
+  color: #8b93a8 !important;
+}
+
+.outstanding-section {
+  text-align: left;
+}
+
+.dark-mode .outstanding-section .ant-typography-strong {
+  color: #ffffff !important;
+}
+
+/* Event Metrics */
+.event-metrics {
+  text-align: center;
+  padding: 20px;
+}
+
+.completion-rate {
+  font-size: 42px;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.dark-mode .completion-rate {
+  color: #34d399 !important;
+}
+
+/* Profitable Items */
+.profitable-item {
+  padding: 12px 0;
+}
+
+.dark-mode .profitable-item {
+  border-bottom-color: #1e2340 !important;
+}
+
+.rank-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* Button Styling */
+.ant-btn-primary {
+  background: #3b82f6;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.ant-btn-primary:hover {
+  background: #2563eb;
+}
+
+/* Footer */
+.reports-footer {
+  margin-top: 24px;
+  padding: 16px 0;
+  text-align: center;
+  border-top: 1px solid #eef2ff;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .reports-footer {
+  border-top-color: #1e2340 !important;
+}
+
+.reports-footer .ant-btn-link {
+  color: #64748b;
+}
+
+.dark-mode .reports-footer .ant-btn-link {
+  color: #8b93a8 !important;
+}
+
+.reports-footer .ant-btn-link:hover {
+  color: #3b82f6;
+}
+
+.dark-mode .reports-footer .ant-btn-link:hover {
+  color: #3b82f6 !important;
+}
+
+/* Dark Mode Progress */
+.dark-mode .ant-progress-bg {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa) !important;
+}
+
+.dark-mode .ant-progress-inner {
+  background: #1e2340 !important;
+}
+
+/* Dark Mode Badge */
+.dark-mode .ant-badge-count {
+  background: #ef4444 !important;
+}
+
+/* Dark Mode Tag */
+.dark-mode .ant-tag {
+  background: #1a1f38 !important;
+  border-color: #2a2f4e !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .ant-tag-blue {
+  background: #3b82f620 !important;
+  border-color: #3b82f6 !important;
+  color: #60a5fa !important;
+}
+
+.dark-mode .ant-tag-green {
+  background: #10b98120 !important;
+  border-color: #10b981 !important;
+  color: #34d399 !important;
+}
+
+.dark-mode .ant-tag-orange {
+  background: #f59e0b20 !important;
+  border-color: #f59e0b !important;
+  color: #fbbf24 !important;
+}
+
+.dark-mode .ant-tag-cyan {
+  background: #06b6d420 !important;
+  border-color: #06b6d4 !important;
+  color: #22d3ee !important;
+}
+
+/* Dark Mode Statistic */
+.dark-mode .ant-statistic-title {
+  color: #8b93a8 !important;
+}
+
+.dark-mode .ant-statistic-content {
+  color: #ffffff !important;
+}
+
+/* Dark Mode Divider */
+.dark-mode .ant-divider {
+  border-top-color: #1e2340 !important;
+}
+
+/* Dark Mode List */
+.dark-mode .ant-list-item {
+  border-bottom-color: #1e2340 !important;
+}
+
+.dark-mode .ant-list-item .ant-typography-strong {
+  color: #ffffff !important;
+}
+
+/* Chart Colors in Dark Mode */
+.dark-mode .recharts-cartesian-grid-horizontal line,
+.dark-mode .recharts-cartesian-grid-vertical line {
+  stroke: #1e2340 !important;
+}
+
+.dark-mode .recharts-text {
+  fill: #8b93a8 !important;
+}
+
+.dark-mode .recharts-legend-item-text {
+  color: #8b93a8 !important;
+  fill: #8b93a8 !important;
+}
+
+/* Tooltip in Dark Mode */
+.dark-mode .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #1a1f38 !important;
+  border-color: #2a2f4e !important;
+  border-radius: 12px !important;
+}
+
+.dark-mode .recharts-tooltip-wrapper .recharts-tooltip-label {
+  color: #ffffff !important;
+}
+
+.dark-mode .recharts-tooltip-wrapper .recharts-tooltip-item {
+  color: #8b93a8 !important;
+}
+
+/* Dark Mode Alert */
+.dark-mode .ant-alert {
+  background: #1a1f38 !important;
+  border-color: #2a2f4e !important;
+}
+
+.dark-mode .ant-alert-message {
+  color: #ffffff !important;
+}
+
+.dark-mode .ant-alert-description {
+  color: #8b93a8 !important;
+}
+
+/* Dark Mode Tabs Dropdown */
+.dark-mode .ant-tabs-dropdown-menu {
+  background: #13172b !important;
+}
+
+.dark-mode .ant-tabs-dropdown-menu-item {
+  color: #8b93a8 !important;
+}
+
+.dark-mode .ant-tabs-dropdown-menu-item:hover {
+  background: #1a1f38 !important;
+  color: #ffffff !important;
+}
+
+/* Smooth transition for theme switching */
+.reports-container,
+.metric-card,
+.chart-card,
+.table-card,
+.ant-card,
+.ant-table,
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-btn,
+.ant-select-selector,
+.ant-picker,
+.ant-tag,
+.ant-progress-bg {
+  transition: all 0.3s ease !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .reports-content {
+    padding: 20px 24px;
+  }
+  
+  .metric-card-value {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .reports-content {
+    padding: 16px 20px;
+  }
+  
+  .reports-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .metric-card-value {
+    font-size: 20px;
+  }
+  
+  .tab-content {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .reports-content {
+    padding: 12px 16px;
+  }
+  
+  .metric-card-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+}

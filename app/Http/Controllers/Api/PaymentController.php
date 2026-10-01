@@ -277,9 +277,12 @@ class PaymentController extends Controller
                 'account_number' => ['nullable', 'string', 'max:50'],
                 'transaction_id' => ['nullable', 'string', 'max:100'],
                 'notes' => ['nullable', 'string'],
-                'receipt_file' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
+                'receipt_file' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:2048'],
                 'verify_immediately' => ['nullable', 'boolean'],
                 'force_duplicate' => ['nullable', 'boolean'],
+                // ⭐ Overpayment / change fields
+                'tendered_amount' => ['nullable', 'numeric', 'min:0'],
+                'change_amount' => ['nullable', 'numeric', 'min:0'],
             ]);
 
             $booking = Booking::with(['invoice', 'quotation', 'items', 'mealServices'])->findOrFail($data['booking_id']);
@@ -373,19 +376,26 @@ class PaymentController extends Controller
                     ['code' => 'fully_paid']
                 );
             }
+            // ⭐ Overpayment handling — accept any amount, but only record the
+            //    amount needed to settle the invoice. The excess is change.
+            $tenderedAmount = (float) ($data['tendered_amount'] ?? $data['amount']);
+            $recordedAmount = (float) $data['amount'];
 
-            // ⭐ Reject any payment above the remaining balance.
-            if ((float) $data['amount'] > $balance + 0.01) {
-                return $this->fail(
-                    'Payment amount cannot exceed the remaining balance.',
-                    422,
-                    [
-                        'code' => 'overpayment',
-                        'remaining_balance' => $balance,
-                        'submitted_amount'  => (float) $data['amount'],
-                    ]
-                );
+            // Clamp the recorded amount so it can never exceed the balance.
+            if ($recordedAmount > $balance + 0.01) {
+                $recordedAmount = $balance;
             }
+
+            // Recompute change from the tendered amount so the DB stays consistent.
+            $changeAmount = max(0, $tenderedAmount - $balance);
+
+            // If the frontend explicitly sent a change_amount, prefer it (rounded).
+            if (isset($data['change_amount']) && (float) $data['change_amount'] > 0) {
+                $changeAmount = (float) $data['change_amount'];
+            }
+
+            // Overwrite $data['amount'] so downstream code uses the corrected value.
+            $data['amount'] = $recordedAmount;
 
             // ⭐ Deposit detection — more lenient so a 30% payment is
             //    always classified as a deposit, even if the amount is
@@ -436,17 +446,29 @@ class PaymentController extends Controller
 
             $verifyImmediately = $request->boolean('verify_immediately');
 
-            $payment = DB::transaction(function () use ($booking, $data, $receiptPath, $verifyImmediately) {
+            $payment = DB::transaction(function () use ($booking, $data, $receiptPath, $verifyImmediately, $tenderedAmount, $changeAmount) {
+                // ⭐ Record the tendered/change amounts inside the notes so the
+                //    receipt and audit trail show the full picture without
+                //    needing a schema change.
+                $baseNotes = $data['notes'] ?? '';
+                if ($changeAmount > 0) {
+                    $changeLine = 'Change given: ₱' . number_format($changeAmount, 2)
+                        . ' (tendered ₱' . number_format($tenderedAmount, 2) . ')';
+                    $baseNotes = $baseNotes
+                        ? $baseNotes . "\n" . $changeLine
+                        : $changeLine;
+                }
+
                 $paymentData = [
                     'payment_number' => $this->generatePaymentNumber(),
                     'booking_id' => $booking->booking_id,
-                    'amount' => (float) $data['amount'],
+                    'amount' => (float) $data['amount'],   // ← already clamped to balance
                     'payment_method' => $data['payment_method'],
                     'payment_type' => $data['payment_type'] ?? 'partial',
                     'reference_number' => $data['reference_number'] ?? $this->generateReferenceNumber(),
                     'transaction_id' => $data['transaction_id'] ?? null,
                     'receipt_file' => $receiptPath,
-                    'notes' => $data['notes'] ?? null,
+                    'notes' => $baseNotes ?: null,
                     'status' => $verifyImmediately ? 'completed' : 'pending',
                     'payment_date' => now(),
                     'verified_by' => $verifyImmediately ? auth()->id() : null,
@@ -1088,6 +1110,20 @@ class PaymentController extends Controller
         $invoice = $booking?->invoice;
         $person = $booking?->serviceEvent?->customer?->person;
 
+        // ⭐ Derive the tendered + change amounts from the notes so the
+        //    receipt and Billing UI can display them without a schema change.
+        $changeAmount = 0.0;
+        $tenderedAmount = (float) ($payment->amount ?? 0);
+
+        if (!empty($payment->notes)) {
+            if (preg_match('/Change given:\s*₱([\d,]+(?:\.\d+)?)/i', $payment->notes, $m)) {
+                $changeAmount = (float) str_replace(',', '', $m[1]);
+            }
+            if (preg_match('/tendered\s*₱([\d,]+(?:\.\d+)?)/i', $payment->notes, $m)) {
+                $tenderedAmount = (float) str_replace(',', '', $m[1]);
+            }
+        }
+
         return [
             'id' => $payment->payment_id,
             'payment_id' => $payment->payment_id,
@@ -1102,6 +1138,10 @@ class PaymentController extends Controller
             'invoice_id' => $invoice?->invoice_id,
             'invoice_number' => $invoice?->invoice_number ?? 'N/A',
             'amount' => (float) ($payment->amount ?? 0),
+            // ⭐ Overpayment / change fields — surfaced to the receipt and UI.
+            'tendered_amount' => $tenderedAmount,
+            'change_amount'   => $changeAmount,
+            'is_exact_cash'   => $changeAmount > 0.01,
             'payment_method' => $payment->payment_method ?? 'N/A',
             'payment_type' => $payment->payment_type ?? 'partial',
             'reference_number' => $payment->reference_number ?? 'N/A',
@@ -1113,12 +1153,7 @@ class PaymentController extends Controller
             'date_time' => $payment->payment_date?->toDateTimeString(),
             'notes' => $payment->notes,
             'receipt_file' => $payment->receipt_file,
-            // ⭐ Storage::disk('public')->url() returns a full URL when
-            //    APP_URL is set; otherwise it returns `/storage/<path>`.
-            //    The frontend's resolveBackendUrl() handles both shapes.
-            'receipt_url' => $payment->receipt_file
-                ? Storage::disk('public')->url($payment->receipt_file)
-                : null,
+            'receipt_url' => $payment->receipt_file ? Storage::disk('public')->url($payment->receipt_file) : null,
             'verified_by_id' => $payment->verified_by,
             'verified_by' => $payment->verifier?->person?->full_name,
             'verified_at' => $payment->verified_at?->toDateTimeString(),
@@ -1414,6 +1449,26 @@ class PaymentController extends Controller
         if ($payment->account_number) {
             $accountRows .= '<tr><td>Account Number</td><td>' . $safe($payment->account_number) . '</td></tr>';
         }
+
+        // ⭐ Extract the tendered / change amounts from the payment notes.
+        $tenderedAmount = (float) ($payment->amount ?? 0);
+        $changeAmount   = 0.0;
+        if (!empty($payment->notes)) {
+            if (preg_match('/Change given:\s*₱([\d,]+(?:\.\d+)?)/i', $payment->notes, $m)) {
+                $changeAmount = (float) str_replace(',', '', $m[1]);
+            }
+            if (preg_match('/tendered\s*₱([\d,]+(?:\.\d+)?)/i', $payment->notes, $m)) {
+                $tenderedAmount = (float) str_replace(',', '', $m[1]);
+            }
+        }
+
+        // ⭐ Build the optional "Change" rows for the summary block.
+        $_changeRow = '';
+        if ($changeAmount > 0.01) {
+            $_changeRow  = '<div class="summary-row"><span>Cash Tendered</span><strong>' . $money($tenderedAmount) . '</strong></div>';
+            $_changeRow .= '<div class="summary-row change-row"><span>Change</span><strong>' . $money($changeAmount) . '</strong></div>';
+        }
+
         $notes = $payment->notes ? '<div class="notes"><strong>Notes:</strong><br>' . nl2br(e($payment->notes)) . '</div>' : '';
 
         return <<<HTML
@@ -1435,8 +1490,9 @@ class PaymentController extends Controller
         th { background: #f9fafb; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .summary { background: #eff6ff; padding: 12px; border-radius: 6px; margin-top: 12px; }
-        .summary-row, .day-total { display: flex; justify-content: space-between; padding: 4px 0; }
+              .summary-row, .day-total { display: flex; justify-content: space-between; padding: 4px 0; }
         .grand { font-size: 18px; font-weight: bold; color: #1a7ab5; border-top: 1px solid #bfdbfe; margin-top: 6px; padding-top: 8px; }
+        .change-row { color: #52c41a; font-weight: 700; border-top: 1px dashed #bbf7d0; margin-top: 4px; padding-top: 6px; }
         .muted { color: #6b7280; }
         .notes { margin-top: 14px; padding: 10px; background: #f9fafb; border-left: 4px solid #1a7ab5; }
         .footer { text-align: center; color: #6b7280; font-size: 12px; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 12px; }
@@ -1492,12 +1548,13 @@ class PaymentController extends Controller
         <tbody>{$paymentsHtml}</tbody>
     </table>
 
-    <div class="summary">
+       <div class="summary">
         <div class="summary-row"><span>Menu Subtotal</span><strong>{$money($subtotal)}</strong></div>
         <div class="summary-row grand"><span>Grand Total</span><strong>{$money($grandTotal)}</strong></div>
         <div class="summary-row"><span>Total Paid</span><strong>{$money($paidAmount)}</strong></div>
         <div class="summary-row"><span>Balance</span><strong>{$money($balance)}</strong></div>
         <div class="summary-row"><span>This Payment</span><strong>{$money($payment->amount ?? 0)}</strong></div>
+        {$_changeRow}
     </div>
 
     {$notes}

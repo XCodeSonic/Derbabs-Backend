@@ -1,0 +1,946 @@
+/* CateringDashboard.css - Professional Dashboard Styling with unique cd- prefix */
+
+/* Main Container */
+.cd-dashboard-container {
+  background: #f0f4f9;
+  min-height: 100vh;
+}
+
+.cd-dashboard-content {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 28px 32px;
+}
+
+/* Header Section */
+.cd-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.cd-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cd-logo-container {
+  width: 48px;
+  height: 48px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.cd-logo-icon {
+  font-size: 26px;
+  color: white;
+}
+
+.cd-dashboard-title {
+  margin: 0;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
+.cd-datetime-container {
+  margin-top: 4px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.cd-date-text,
+.cd-time-text {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.cd-time-range-select {
+  width: 140px;
+  border-radius: 12px;
+}
+
+/* Metrics Row */
+.cd-metrics-row {
+  margin-bottom: 16px;
+}
+
+/* Metric Card */
+.cd-metric-card {
+  background: white;
+  border-radius: 20px;
+  padding: 16px 20px;
+  border: 1px solid #eef2ff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 100%;
+}
+
+.cd-metric-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.cd-metric-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.cd-metric-card-title {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: #64748b;
+}
+
+.cd-metric-card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 4px;
+}
+
+.cd-metric-card-subtitle {
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+  color: #64748b;
+}
+
+.cd-metric-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cd-metric-card-trend {
+  border-radius: 20px;
+  font-size: 11px;
+  margin: 0;
+  padding: 2px 10px;
+}
+
+/* Status Badge */
+.cd-status-badge {
+  border-radius: 20px;
+  padding: 2px 12px;
+  font-size: 12px;
+}
+
+/* Charts Section */
+.cd-charts-row {
+  margin-bottom: 24px;
+}
+
+.cd-chart-card {
+  border-radius: 24px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.cd-chart-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.cd-chart-card .ant-card-head {
+  border-bottom: 1px solid #eef2ff;
+  padding: 0 24px;
+}
+
+.cd-chart-card .ant-card-head-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: #1e293b;
+  padding: 18px 0;
+}
+
+.cd-export-btn {
+  border-radius: 12px;
+}
+
+/* Tables Section */
+.cd-tables-row {
+  margin-bottom: 24px;
+}
+
+.cd-table-card {
+  border-radius: 24px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.cd-table-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.cd-table-card .ant-card-head {
+  border-bottom: 1px solid #eef2ff;
+  padding: 0 24px;
+}
+
+.cd-table-card .ant-card-head-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: #1e293b;
+  padding: 18px 0;
+}
+
+.cd-data-table .ant-table-thead > tr > th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  border-bottom: 1px solid #eef2ff;
+  font-size: 13px;
+}
+
+.cd-data-table .ant-table-tbody > tr > td {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 14px 16px;
+}
+
+.cd-data-table .ant-table-tbody > tr:hover > td {
+  background: #f8fafc;
+}
+
+/* Table Specific Styles */
+.cd-booking-id {
+  color: #3b82f6;
+}
+
+.cd-amount-value {
+  font-weight: 600;
+}
+
+.cd-action-btn {
+  color: #3b82f6;
+}
+
+.cd-event-name {
+  font-weight: 500;
+}
+
+.cd-staff-avatar {
+  background: #3b82f6;
+}
+
+.cd-ingredient-name {
+  font-weight: 500;
+}
+
+.cd-stock-level-container {
+  width: 100%;
+}
+
+.cd-stock-level-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.cd-stock-level-text {
+  font-size: 12px;
+}
+
+.cd-stock-level-status {
+  font-size: 12px;
+}
+
+.cd-out-of-stock {
+  color: #ef4444;
+}
+
+.cd-low-stock {
+  color: #f59e0b;
+}
+
+.cd-stock-progress .ant-progress-bg {
+  border-radius: 20px;
+}
+
+.cd-employee-avatar {
+  background: #3b82f6;
+}
+
+.cd-schedule-text {
+  font-size: 12px;
+}
+
+/* New Booking Button */
+.cd-new-booking-btn {
+  background: #3b82f6;
+  border-radius: 12px;
+  box-shadow: none;
+  font-weight: 500;
+}
+
+.cd-new-booking-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* View All Button */
+.cd-view-all-btn {
+  color: #3b82f6;
+  padding: 0;
+}
+
+/* Attendance Section */
+.cd-attendance-divider {
+  margin: 16px 0 0 0;
+}
+
+.cd-attendance-summary {
+  margin-top: 16px;
+  display: flex;
+  gap: 32px;
+  justify-content: flex-end;
+  padding-top: 8px;
+}
+
+/* Activity List */
+.cd-activity-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.cd-activity-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cd-activity-title {
+  font-size: 14px;
+}
+
+.cd-activity-value {
+  font-size: 14px;
+  color: #475569;
+}
+
+/* Quick Actions */
+.cd-quick-actions-card {
+  margin-bottom: 24px;
+  border-radius: 24px;
+}
+
+.cd-quick-action-btn {
+  border-radius: 20px;
+  border: 1px solid #eef2ff;
+  background: white;
+  transition: all 0.25s ease;
+  height: auto;
+  padding: 18px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.cd-quick-action-btn:hover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.12);
+}
+
+.cd-action-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Footer */
+.cd-dashboard-footer {
+  padding: 20px 0;
+  text-align: center;
+  border-top: 1px solid #eef2ff;
+}
+
+.cd-footer-text {
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .cd-dashboard-content {
+    padding: 24px 28px;
+  }
+  
+  .cd-metric-card-value {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cd-dashboard-content {
+    padding: 20px 24px;
+  }
+  
+  .cd-dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .cd-metric-card-value {
+    font-size: 22px;
+  }
+  
+  .cd-attendance-summary {
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 576px) {
+  .cd-dashboard-content {
+    padding: 16px 20px;
+  }
+  
+  .cd-logo-container {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .cd-logo-icon {
+    font-size: 20px;
+  }
+  
+  .cd-dashboard-title {
+    font-size: 20px;
+  }
+  
+  .cd-metric-card {
+    padding: 12px 16px;
+  }
+  
+  .cd-metric-card-value {
+    font-size: 20px;
+  }
+  
+  .cd-metric-card-icon {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Dashboard.css - Updated with Finance Dashboard Dark Mode Colors */
+
+/* Dark Mode Container */
+.cd-dark-mode {
+  background: #0a0e1a !important;
+}
+
+.cd-dark-mode .cd-dashboard-content {
+  background: #0a0e1a !important;
+}
+
+/* Dark Mode Text Colors */
+.cd-text-dark-primary {
+  color: #ffffff !important;
+}
+
+.cd-text-dark-secondary {
+  color: #8b93a8 !important;
+}
+
+/* Dark Mode Metric Cards */
+.cd-metric-card-dark {
+  background: #13172b !important;
+  border-color: #1e2340 !important;
+  border-radius: 24px !important;
+}
+
+.cd-metric-card-dark:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  background: #1a1f38 !important;
+}
+
+.cd-metric-card-dark .cd-metric-card-title,
+.cd-metric-card-dark .cd-metric-card-subtitle {
+  color: #8b93a8 !important;
+}
+
+.cd-metric-card-dark .cd-metric-card-value {
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+/* Dark Mode Chart Cards */
+.cd-chart-card-dark {
+  background: #13172b !important;
+  border-color: #1e2340 !important;
+  border-radius: 24px !important;
+}
+
+.cd-chart-card-dark .ant-card-head {
+  border-bottom-color: #1e2340 !important;
+}
+
+.cd-chart-card-dark .ant-card-head-title {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+/* Dark Mode Table Cards */
+.cd-table-card-dark {
+  background: #13172b !important;
+  border-color: #1e2340 !important;
+  border-radius: 24px !important;
+}
+
+.cd-table-card-dark .ant-card-head {
+  border-bottom-color: #1e2340 !important;
+}
+
+.cd-table-card-dark .ant-card-head-title {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+/* Dark Mode Table Styles */
+.cd-table-dark .ant-table {
+  background: transparent !important;
+  color: #ffffff !important;
+}
+
+.cd-table-dark .ant-table-thead > tr > th {
+  background: #0d1125 !important;
+  color: #8b93a8 !important;
+  border-bottom-color: #1e2340 !important;
+  font-weight: 500;
+}
+
+.cd-table-dark .ant-table-tbody > tr > td {
+  border-bottom-color: #1e2340 !important;
+  color: #ffffff !important;
+}
+
+.cd-table-dark .ant-table-tbody > tr:hover > td {
+  background: #1a1f38 !important;
+}
+
+/* Dark Mode Quick Actions */
+.cd-quick-actions-card-dark {
+  background: #13172b !important;
+  border-color: #1e2340 !important;
+  border-radius: 24px !important;
+}
+
+.cd-quick-actions-card-dark .ant-card-head {
+  border-bottom-color: #1e2340 !important;
+}
+
+.cd-quick-actions-card-dark .ant-card-head-title {
+  color: #ffffff !important;
+}
+
+.cd-quick-action-btn-dark {
+  background: #1a1f38 !important;
+  border-color: #2a2f4e !important;
+  color: #ffffff !important;
+  border-radius: 16px !important;
+  height: auto !important;
+  padding: 16px 12px !important;
+}
+
+.cd-quick-action-btn-dark:hover {
+  background: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+  color: white !important;
+  transform: translateY(-2px);
+}
+
+/* Dark Mode Activity Items */
+.cd-activity-item-dark {
+  border-bottom-color: #1e2340 !important;
+}
+
+.cd-activity-item-dark .cd-activity-icon {
+  background: #1a1f38 !important;
+  border-radius: 14px !important;
+}
+
+/* Dark Mode Logo Container */
+.cd-logo-container-dark {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+}
+
+/* Dark Mode Select Dropdown */
+.cd-select-dark .ant-select-selector {
+  background: #13172b !important;
+  border-color: #1e2340 !important;
+  color: #ffffff !important;
+  border-radius: 16px !important;
+}
+
+.cd-select-dark .ant-select-arrow {
+  color: #8b93a8 !important;
+}
+
+/* Dark Mode Footer */
+.cd-dark-mode .cd-dashboard-footer {
+  border-top-color: #1e2340 !important;
+}
+
+/* Dark Mode Divider */
+.cd-dark-mode .ant-divider {
+  border-top-color: #1e2340 !important;
+}
+
+/* Dark Mode Progress Bar */
+.cd-dark-mode .ant-progress-bg {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa) !important;
+  border-radius: 10px !important;
+}
+
+/* Dark Mode Avatar */
+.cd-dark-mode .cd-employee-avatar,
+.cd-dark-mode .cd-staff-avatar {
+  background: #3b82f6 !important;
+}
+
+/* Dark Mode Input/Select Placeholder */
+.cd-dark-mode .ant-select-selection-placeholder {
+  color: #5a628a !important;
+}
+
+/* Dark Mode Tag */
+.cd-dark-mode .ant-tag {
+  background: #1a1f38 !important;
+  border-color: #2a2f4e !important;
+  color: #ffffff !important;
+  border-radius: 20px !important;
+  padding: 4px 12px !important;
+}
+
+.cd-dark-mode .ant-tag-success {
+  background: #10b98120 !important;
+  border-color: #10b981 !important;
+  color: #34d399 !important;
+}
+
+.cd-dark-mode .ant-tag-error {
+  background: #ef444420 !important;
+  border-color: #ef4444 !important;
+  color: #f87171 !important;
+}
+
+.cd-dark-mode .ant-tag-warning {
+  background: #f59e0b20 !important;
+  border-color: #f59e0b !important;
+  color: #fbbf24 !important;
+}
+
+.cd-dark-mode .ant-tag-blue {
+  background: #3b82f620 !important;
+  border-color: #3b82f6 !important;
+  color: #60a5fa !important;
+}
+
+/* Dark Mode List Items */
+.cd-dark-mode .ant-list-item {
+  border-bottom-color: #1e2340 !important;
+}
+
+/* Dark Mode Modal */
+.cd-dark-mode .ant-modal-content {
+  background: #13172b !important;
+  border-radius: 24px !important;
+}
+
+.cd-dark-mode .ant-modal-header {
+  background: #13172b !important;
+  border-bottom-color: #1e2340 !important;
+  border-radius: 24px 24px 0 0 !important;
+}
+
+.cd-dark-mode .ant-modal-title {
+  color: #ffffff !important;
+}
+
+.cd-dark-mode .ant-modal-close {
+  color: #8b93a8 !important;
+}
+
+/* Dark Mode Tabs */
+.cd-dark-mode .ant-tabs-tab {
+  color: #8b93a8 !important;
+}
+
+.cd-dark-mode .ant-tabs-tab-active {
+  color: #3b82f6 !important;
+}
+
+.cd-dark-mode .ant-tabs-ink-bar {
+  background: #3b82f6 !important;
+}
+
+/* Dark Mode Statistic */
+.cd-dark-mode .ant-statistic-title {
+  color: #8b93a8 !important;
+}
+
+.cd-dark-mode .ant-statistic-content {
+  color: #ffffff !important;
+}
+
+/* Dark Mode Button - Primary */
+.cd-dark-mode .ant-btn-primary {
+  background: #3b82f6 !important;
+  border-radius: 12px !important;
+}
+
+.cd-dark-mode .ant-btn-primary:hover {
+  background: #2563eb !important;
+}
+
+/* Dark Mode Button - Default */
+.cd-dark-mode .ant-btn-default {
+  background: #1a1f38 !important;
+  border-color: #2a2f4e !important;
+  color: #ffffff !important;
+}
+
+.cd-dark-mode .ant-btn-default:hover {
+  border-color: #3b82f6 !important;
+  color: #3b82f6 !important;
+}
+
+/* Dark Mode Button - Link */
+.cd-dark-mode .ant-btn-link {
+  color: #3b82f6 !important;
+}
+
+/* Dark Mode Badge */
+.cd-dark-mode .ant-badge-count {
+  background: #ef4444 !important;
+}
+
+/* Dark Mode Timeline */
+.cd-dark-mode .ant-timeline-item-head {
+  background: #13172b !important;
+}
+
+.cd-dark-mode .ant-timeline-item-content {
+  color: #ffffff !important;
+}
+
+/* Dark Mode Input */
+.cd-dark-mode .ant-input {
+  background: #1a1f38 !important;
+  border-color: #2a2f4e !important;
+  color: #ffffff !important;
+  border-radius: 12px !important;
+}
+
+.cd-dark-mode .ant-input::placeholder {
+  color: #5a628a !important;
+}
+
+.cd-dark-mode .ant-input:hover,
+.cd-dark-mode .ant-input:focus {
+  border-color: #3b82f6 !important;
+}
+
+/* Dark Mode Card Extra Content */
+.cd-dark-mode .ant-card-extra {
+  color: #8b93a8 !important;
+}
+
+/* Chart Colors in Dark Mode - Override recharts defaults */
+.cd-dark-mode .recharts-cartesian-grid-horizontal line,
+.cd-dark-mode .recharts-cartesian-grid-vertical line {
+  stroke: #1e2340 !important;
+}
+
+.cd-dark-mode .recharts-text {
+  fill: #8b93a8 !important;
+}
+
+.cd-dark-mode .recharts-legend-item-text {
+  color: #8b93a8 !important;
+  fill: #8b93a8 !important;
+}
+
+/* Tooltip in Dark Mode */
+.cd-dark-mode .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #1a1f38 !important;
+  border-color: #2a2f4e !important;
+  border-radius: 12px !important;
+}
+
+.cd-dark-mode .recharts-tooltip-wrapper .recharts-tooltip-label {
+  color: #ffffff !important;
+}
+
+.cd-dark-mode .recharts-tooltip-wrapper .recharts-tooltip-item {
+  color: #8b93a8 !important;
+}
+
+/* Smooth transition for theme switching */
+.cd-dashboard-container,
+.cd-metric-card,
+.cd-chart-card,
+.cd-table-card,
+.cd-quick-action-btn,
+.ant-card,
+.ant-table,
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-btn,
+.ant-input,
+.ant-select-selector,
+.ant-tag {
+  transition: all 0.3s ease !important;
+}
+
+/* Additional Dark Mode Specific Styles */
+.cd-dark-mode .cd-dashboard-title {
+  color: #ffffff !important;
+}
+
+.cd-dark-mode .cd-date-text,
+.cd-dark-mode .cd-time-text {
+  color: #8b93a8 !important;
+}
+
+.cd-dark-mode .cd-new-booking-btn {
+  background: #3b82f6 !important;
+  border-radius: 16px !important;
+}
+
+.cd-dark-mode .cd-view-all-btn {
+  color: #3b82f6 !important;
+}
+
+.cd-dark-mode .cd-booking-id {
+  color: #60a5fa !important;
+}
+
+.cd-dark-mode .cd-amount-value {
+  color: #34d399 !important;
+  font-weight: 600;
+}
+
+.cd-dark-mode .cd-event-name {
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+.cd-dark-mode .cd-ingredient-name {
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+.cd-dark-mode .cd-stock-level-text {
+  color: #8b93a8 !important;
+}
+
+.cd-dark-mode .cd-out-of-stock {
+  color: #f87171 !important;
+}
+
+.cd-dark-mode .cd-low-stock {
+  color: #fbbf24 !important;
+}
+
+.cd-dark-mode .cd-schedule-text {
+  color: #8b93a8 !important;
+}
+
+.cd-dark-mode .cd-action-btn {
+  color: #3b82f6 !important;
+}
+
+/* Scrollbar for Dark Mode */
+.cd-dark-mode ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.cd-dark-mode ::-webkit-scrollbar-track {
+  background: #0d1125;
+  border-radius: 10px;
+}
+
+.cd-dark-mode ::-webkit-scrollbar-thumb {
+  background: #2a2f4e;
+  border-radius: 10px;
+}
+
+.cd-dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
+}
+
+/* Responsive adjustments for dark mode */
+@media (max-width: 768px) {
+  .cd-dark-mode .cd-dashboard-content {
+    background: #0a0e1a;
+  }
+  
+  .cd-dark-mode .cd-metric-card-dark,
+  .cd-dark-mode .cd-chart-card-dark,
+  .cd-dark-mode .cd-table-card-dark {
+    background: #13172b !important;
+  }
+}
+
+/* Dark Mode Specific for Charts Row */
+.cd-dark-mode .cd-charts-row .ant-card {
+  background: #13172b !important;
+}
+
+/* Dark Mode Specific for Metric Row Spacing */
+.cd-dark-mode .cd-metrics-row .cd-metric-card {
+  border: 1px solid #1e2340;
+}
+
+/* Dark Mode Hover Effects */
+.cd-dark-mode .ant-table-tbody > tr:hover > td {
+  background: #1a1f38 !important;
+}
+
+.cd-dark-mode .ant-card-hoverable:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Dark Mode Status Indicators */
+.cd-dark-mode .ant-badge-status-success {
+  background-color: #10b981 !important;
+}
+
+.cd-dark-mode .ant-badge-status-processing {
+  background-color: #3b82f6 !important;
+}
+
+.cd-dark-mode .ant-badge-status-warning {
+  background-color: #f59e0b !important;
+}
+
+.cd-dark-mode .ant-badge-status-error {
+  background-color: #ef4444 !important;
+}

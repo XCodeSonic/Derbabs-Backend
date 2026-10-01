@@ -17,7 +17,47 @@ class AttendanceService
     {
         return DB::transaction(function () use ($employee, $data) {
             $timestamp = $this->attendanceTimestamp($data);
+            // ⭐ FIX: Prefer an explicit cutoff_start sent by the mobile app.
+            //    This keeps the attendance_date inside the cutoff the employee
+            //    was actually working, regardless of device timezone drift.
+            $cutoffStart = $data['cutoff_start'] ?? null;
+            if ($cutoffStart) {
+                $cutoffStartCarbon = Carbon::parse($cutoffStart);
+                if ($timestamp->lt($cutoffStartCarbon)) {
+                    // Timestamp is before the requested cutoff -> snap forward.
+                    $timestamp = $cutoffStartCarbon->copy()->setTime(
+                        $timestamp->hour,
+                        $timestamp->minute,
+                        $timestamp->second
+                    );
+                }
+            }
             $date = $timestamp->toDateString();
+
+            // ⭐ FIX: If the mobile app supplied a cutoff_start, the row MUST
+            //    belong to that cutoff. Snap the date to the cutoff's start
+            //    day (1 or 16) when a timezone shift pushed it one day back.
+            if ($cutoffStart) {
+                $cutoffStartCarbon = Carbon::parse($cutoffStart);
+                $cutoffStartDay = (int) $cutoffStartCarbon->day;
+                $dateCarbon = Carbon::parse($date);
+
+                // Only correct an obvious off-by-one at the cutoff boundary.
+                if (
+                    $cutoffStartDay === 16
+                    && (int) $dateCarbon->day === 15
+                    && $dateCarbon->isSameMonth($cutoffStartCarbon)
+                ) {
+                    $date = $dateCarbon->copy()->addDay()->toDateString();
+                    $timestamp = $timestamp->copy()->addDay();
+                } elseif (
+                    $cutoffStartDay === 1
+                    && (int) $dateCarbon->day === 0
+                ) {
+                    // Defensive: month rollover edge case
+                    $date = $dateCarbon->copy()->toDateString();
+                }
+            }
 
             $open = AttendanceLog::where('employee_id', $employee->employee_id)
                 ->whereDate('attendance_date', $date)
@@ -41,6 +81,14 @@ class AttendanceService
 
             $status = $this->initialStatus($timestamp, $schedule);
 
+            // ⭐ FIX C: Fail loudly when a selfie was provided but could not be stored.
+            $storedSelfie = $this->storeSelfie($data['selfie'] ?? null, $employee->employee_id, 'in');
+            if (!empty($data['selfie']) && $storedSelfie === null) {
+                throw ValidationException::withMessages([
+                    'selfie' => 'Selfie could not be processed. Please retake the photo.',
+                ]);
+            }
+
             $log = AttendanceLog::create([
                 'employee_id' => $employee->employee_id,
                 'schedule_id' => $schedule?->schedule_id,
@@ -48,7 +96,7 @@ class AttendanceService
                 'time_in' => $timestamp,
                 'time_in_latitude' => $data['latitude'] ?? null,
                 'time_in_longitude' => $data['longitude'] ?? null,
-                'time_in_photo' => $this->storeSelfie($data['selfie'] ?? null, $employee->employee_id, 'in'),
+                'time_in_photo' => $storedSelfie,
                 'device_info' => $data['device_info'] ?? null,
                 'ip_address' => request()?->ip(),
                 'status' => $status,
@@ -56,8 +104,13 @@ class AttendanceService
                 // ⭐ FIX #9: Auto-tag as 'late_in' when the mobile app flagged it or when late.
                 'attendance_flag' => $status === 'late' ? 'late_in' : null,
             ]);
+            $log = $log->fresh(['employee.person', 'employee.department', 'employee.position.salaryGrade', 'schedule']);
 
-            return $log->fresh(['employee.person', 'employee.department', 'employee.position.salaryGrade', 'schedule']);
+            // ⭐ Attach resolved selfie URLs so mobile can render immediately
+            $log->time_in_selfie_url = $this->resolveSelfieUrl($log->time_in_photo);
+            $log->time_out_selfie_url = $this->resolveSelfieUrl($log->time_out_photo);
+
+            return $log;
         });
     }
 
@@ -79,7 +132,13 @@ class AttendanceService
                 'time_out_photo' => $this->storeSelfie($data['selfie'] ?? null, $employee->employee_id, 'out'),
             ]);
 
-            return $this->recalculate($log->fresh(['schedule']));
+            $log = $this->recalculate($log->fresh(['schedule']));
+
+            // ⭐ Attach resolved selfie URLs so mobile can render immediately
+            $log->time_in_selfie_url = $this->resolveSelfieUrl($log->time_in_photo);
+            $log->time_out_selfie_url = $this->resolveSelfieUrl($log->time_out_photo);
+
+            return $log;
         });
     }
 
@@ -138,24 +197,37 @@ class AttendanceService
             ->whereBetween('work_date', [$start, $end])
             ->whereNotIn('status', ['cancelled'])
             ->each(function (Schedule $schedule) use ($employeeId) {
-                AttendanceLog::firstOrCreate(
-                    [
-                        'employee_id' => $employeeId,
-                        'attendance_date' => $schedule->work_date->toDateString(),
-                    ],
-                    [
-                        'schedule_id' => $schedule->schedule_id,
-                        'status' => 'absent',
-                        'approval_status' => 'approved',
-                        'attendance_flag' => 'awol',   // ⭐ auto-tag AWOL
-                        'approved_by' => auth()->id(),
-                        'approved_at' => now(),
-                        'approval_notes' => 'System-generated AWOL from employee schedule.',
-                        'regular_hours' => 0,
-                        'overtime_hours' => 0,
-                        'undertime_hours' => (float) $schedule->duration_hours,
-                    ]
-                );
+                $attendanceDate = $schedule->work_date instanceof \Carbon\Carbon
+                    ? $schedule->work_date->toDateString()
+                    : (string) $schedule->work_date;
+
+                // ⭐ FIX: If a row already exists for this employee+date, do NOT
+                //    touch it — the employee may have already timed in, or the
+                //    admin may have already saved it to payroll. firstOrCreate
+                //    is already safe, but we also need to ensure we never
+                //    clobber payroll_ready_at on an existing row.
+                $existing = AttendanceLog::where('employee_id', $employeeId)
+                    ->whereDate('attendance_date', $attendanceDate)
+                    ->first();
+
+                if ($existing) {
+                    return;
+                }
+
+                AttendanceLog::create([
+                    'employee_id' => $employeeId,
+                    'schedule_id' => $schedule->schedule_id,
+                    'attendance_date' => $attendanceDate,
+                    'status' => 'absent',
+                    'approval_status' => 'approved',
+                    'attendance_flag' => 'awol',
+                    'approved_by' => auth()->id(),
+                    'approved_at' => now(),
+                    'approval_notes' => 'System-generated AWOL from employee schedule.',
+                    'regular_hours' => 0,
+                    'overtime_hours' => 0,
+                    'undertime_hours' => (float) $schedule->duration_hours,
+                ]);
             });
     }
 
@@ -193,11 +265,18 @@ class AttendanceService
     {
         $candidate = $data['captured_at'] ?? $data['timestamp'] ?? null;
 
+        // ⭐ FIX: Always resolve the timestamp into the APPLICATION timezone
+        //    (config('app.timezone')), never the device timezone. The device
+        //    timezone is only used for display, not for deciding which cutoff
+        //    a row belongs to. Otherwise a device with a wrong clock silently
+        //    pushes a September row into October.
+        $appTimezone = config('app.timezone', 'UTC');
+
         if ($candidate) {
-            return Carbon::parse($candidate);
+            return Carbon::parse($candidate)->setTimezone($appTimezone);
         }
 
-        return now();
+        return now()->setTimezone($appTimezone);
     }
 
     private function initialStatus(Carbon $timestamp, ?Schedule $schedule): string
@@ -222,6 +301,27 @@ class AttendanceService
         }
 
         return (float) ($schedule->duration_hours ?? 8);
+    }
+
+    /**
+     * Convert a stored path or URL into a browser/mobile-renderable URL.
+     * Mirrors AttendanceController::resolveSelfieUrl() so mobile & web agree.
+     */
+    public function resolveSelfieUrl(?string $path): ?string
+    {
+        if (! $path) {
+            return null;
+        }
+
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        if (str_starts_with($path, '/storage/')) {
+            return url($path);
+        }
+
+        return Storage::disk('public')->url($path);
     }
 
     private function storeSelfie(?string $selfie, int $employeeId, string $direction): ?string

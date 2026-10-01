@@ -14,11 +14,11 @@ use Illuminate\Validation\ValidationException;
 
 class PayrollService
 {
-    public function previewMany(array $employeeIds, string $start, string $end): array
+    public function previewMany(array $employeeIds, string $start, string $end, array $options = []): array
     {
-        $items = collect($employeeIds)->map(function ($employeeId) use ($start, $end) {
+        $items = collect($employeeIds)->map(function ($employeeId) use ($start, $end, $options) {
             $employee = Employee::with(['person', 'department', 'position.salaryGrade'])->findOrFail($employeeId);
-            $calculation = $this->calculateEmployeePayroll($employee, $start, $end, false);
+            $calculation = $this->calculateEmployeePayroll($employee, $start, $end, false, $options);
 
             return [
                 'employee_id' => $employee->employee_id,
@@ -54,11 +54,61 @@ class PayrollService
         ];
     }
 
-    public function generate(int $employeeId, string $start, string $end, ?string $notes = null): Payroll
-    {
-        return DB::transaction(function () use ($employeeId, $start, $end, $notes) {
+    public function generate(
+        int $employeeId,
+        string $start,
+        string $end,
+        ?string $notes = null,
+        array $options = []
+    ): Payroll {
+        return DB::transaction(function () use ($employeeId, $start, $end, $notes, $options) {
             $employee = Employee::with(['person', 'department', 'position.salaryGrade'])->findOrFail($employeeId);
-            $calculation = $this->calculateEmployeePayroll($employee, $start, $end, true);
+
+            $calculation = $this->calculateEmployeePayroll($employee, $start, $end, true, $options);
+
+            // ⭐ HARDENED: Every monetary column is written explicitly from
+            //    the fresh calculation. `total_deductions` is recomputed from
+            //    the individual deduction columns rather than trusted from
+            //    the calculation array, so a bug in the calc layer cannot
+            //    persist a wrong total to the DB.
+            $sssDeduction = round((float) ($calculation['sss_deduction'] ?? 0), 2);
+            $philhealthDeduction = round((float) ($calculation['philhealth_deduction'] ?? 0), 2);
+            $pagibigDeduction = round((float) ($calculation['pagibig_deduction'] ?? 0), 2);
+            $withholdingTax = round((float) ($calculation['withholding_tax'] ?? 0), 2);
+            $otherDeduction = round((float) ($calculation['other_deduction'] ?? 0), 2);
+
+            $recomputedTotalDeductions = round(
+                $sssDeduction
+                    + $philhealthDeduction
+                    + $pagibigDeduction
+                    + $withholdingTax
+                    + $otherDeduction,
+                2
+            );
+
+            $grossPay = round((float) $calculation['gross_pay'], 2);
+            $netPay = round($grossPay - $recomputedTotalDeductions, 2);
+
+            $calculationPayload = [
+                'regular_hours' => $calculation['regular_hours'],
+                'overtime_hours' => $calculation['overtime_hours'],
+                'total_hours' => $calculation['total_hours'],
+                'hourly_rate' => $calculation['hourly_rate'],
+                'regular_pay' => $calculation['regular_pay'],
+                'overtime_pay' => $calculation['overtime_pay'],
+                'gross_pay' => $grossPay,
+                'sss_deduction' => $sssDeduction,
+                'philhealth_deduction' => $philhealthDeduction,
+                'pagibig_deduction' => $pagibigDeduction,
+                'withholding_tax' => $withholdingTax,
+                // ⭐ NOTE: This column name is `other_deductions` (plural).
+                //    If your migration defines `other_deduction` (singular),
+                //    change this key to match. Both controller reads fall
+                //    back to the other name for compatibility.
+                'other_deductions' => $otherDeduction,
+                'total_deductions' => $recomputedTotalDeductions,
+                'net_pay' => $netPay,
+            ];
 
             $payroll = Payroll::withTrashed()
                 ->where('employee_id', $employeeId)
@@ -77,15 +127,15 @@ class PayrollService
                     $payroll->restore();
                 }
 
-                $payroll->update([
+                $payroll->update(array_merge($calculationPayload, [
                     'status' => 'calculated',
                     'payment_date' => $payroll->payment_date ?: now()->toDateString(),
                     'calculated_by' => auth()->id(),
                     'calculated_at' => now(),
                     'notes' => $notes ?? $payroll->notes,
-                ]);
+                ]));
             } else {
-                $payroll = Payroll::create([
+                $payroll = Payroll::create(array_merge($calculationPayload, [
                     'payroll_number' => $this->makePayrollNumber($employeeId, $start, $end),
                     'employee_id' => $employeeId,
                     'cutoff_start' => $start,
@@ -95,6 +145,30 @@ class PayrollService
                     'calculated_by' => auth()->id(),
                     'calculated_at' => now(),
                     'notes' => $notes,
+                ]));
+            }
+
+            // ⭐ FIX: When the caller explicitly requested zero deductions
+            //    (skip_deductions OR deductions=null), purge EVERY existing
+            //    deduction PayrollItem row — including stale manual-deduction
+            //    rows from a previous run. Otherwise the model's item-based
+            //    accessors would revive them and inflate `total_deductions`.
+            $skipDeductionsForPurge = (bool) ($options['skip_deductions'] ?? false);
+            $callerPassedNullDeductions = array_key_exists('deductions', $options)
+                && $options['deductions'] === null;
+
+            if ($skipDeductionsForPurge || $callerPassedNullDeductions) {
+                PayrollItem::where('payroll_id', $payroll->payroll_id)
+                    ->where('item_type', 'deduction')
+                    ->delete();
+
+                $this->createSystemItems($payroll, $calculation);
+
+                return $payroll->fresh([
+                    'employee.person',
+                    'employee.department',
+                    'employee.position.salaryGrade',
+                    'items',
                 ]);
             }
 
@@ -116,13 +190,14 @@ class PayrollService
                             'PhilHealth',
                             'Pag-IBIG',
                             'Withholding Tax',
+                            'Other Deduction',
                         ]);
                 })
                 ->delete();
 
             $this->createSystemItems($payroll, $calculation);
 
-            // Re-save any manual deductions after recalculation if they existed.
+            // Re-save manual deductions only when deductions were NOT skipped.
             foreach ($manualDeductions as $manual) {
                 PayrollItem::updateOrCreate(
                     [
@@ -136,13 +211,17 @@ class PayrollService
                     ]
                 );
             }
-
             return $payroll->fresh(['employee.person', 'employee.department', 'employee.position.salaryGrade', 'items']);
         });
     }
 
-    public function calculateEmployeePayroll(Employee $employee, string $start, string $end, bool $enforcePayrollReady = true): array
-    {
+    public function calculateEmployeePayroll(
+        Employee $employee,
+        string $start,
+        string $end,
+        bool $enforcePayrollReady = true,
+        array $options = []
+    ): array {
         $allAttendance = AttendanceLog::with(['schedule', 'overtimeRequest'])
             ->where('employee_id', $employee->employee_id)
             ->whereBetween('attendance_date', [$start, $end])
@@ -161,18 +240,69 @@ class PayrollService
         }
 
         $attendance = $allAttendance
-            ->filter(fn (AttendanceLog $row) => $row->approval_status === 'approved')
+            ->filter(fn(AttendanceLog $row) => $row->approval_status === 'approved')
             ->values();
 
         $regularHours = round((float) $attendance->sum('regular_hours'), 2);
-        $approvedOvertime = $attendance->filter(fn ($row) => (bool) $row->overtime_approved);
+        $approvedOvertime = $attendance->filter(fn($row) => (bool) $row->overtime_approved);
         $overtimeHours = round((float) $approvedOvertime->sum('overtime_hours'), 2);
         $hourlyRate = round((float) $employee->calculated_hourly_rate, 2);
         $regularPay = round($regularHours * $hourlyRate, 2);
         $overtimeRate = max(1, (float) Setting::getValue('payroll', 'overtime_rate', 1.25));
         $overtimePay = round($overtimeHours * $hourlyRate * $overtimeRate, 2);
         $grossPay = round($regularPay + $overtimePay, 2);
-        $deductions = $this->standardDeductions($employee, $grossPay);
+
+        // ⭐ HARDENED: Resolve deductions from the caller's explicit intent.
+        //
+        //   Priority:
+        //   1. options['skip_deductions'] === true  → zero everywhere.
+        //   2. options['auto_government_deductions'] === true
+        //        → use standardDeductions(), but OVERRIDE with any
+        //          explicit non-zero value from options['deductions'].
+        //   3. Otherwise → use EXACTLY the values in options['deductions']
+        //      (missing keys treated as 0).
+        //
+        //   This guarantees that opening the modal, leaving everything at 0
+        //   and clicking Confirm produces a payroll with NO deductions.
+        $optionsDeductions = is_array($options['deductions'] ?? null)
+            ? $options['deductions']
+            : [];
+
+        $skipDeductions = (bool) ($options['skip_deductions'] ?? false);
+        $autoGovernment = (bool) ($options['auto_government_deductions'] ?? false);
+
+        if ($skipDeductions) {
+            $deductions = [
+                'SSS' => 0,
+                'PhilHealth' => 0,
+                'Pag-IBIG' => 0,
+                'Withholding Tax' => 0,
+                'Other Deduction' => 0,
+            ];
+        } else {
+            $standard = $autoGovernment
+                ? $this->standardDeductions($employee, $grossPay)
+                : ['SSS' => 0, 'PhilHealth' => 0, 'Pag-IBIG' => 0, 'Withholding Tax' => 0];
+
+            $deductions = [
+                'SSS' => array_key_exists('sss', $optionsDeductions)
+                    ? max(0, (float) $optionsDeductions['sss'])
+                    : (float) ($standard['SSS'] ?? 0),
+                'PhilHealth' => array_key_exists('philhealth', $optionsDeductions)
+                    ? max(0, (float) $optionsDeductions['philhealth'])
+                    : (float) ($standard['PhilHealth'] ?? 0),
+                'Pag-IBIG' => array_key_exists('pagibig', $optionsDeductions)
+                    ? max(0, (float) $optionsDeductions['pagibig'])
+                    : (float) ($standard['Pag-IBIG'] ?? 0),
+                'Withholding Tax' => array_key_exists('tax', $optionsDeductions)
+                    ? max(0, (float) $optionsDeductions['tax'])
+                    : (float) ($standard['Withholding Tax'] ?? 0),
+                'Other Deduction' => array_key_exists('other', $optionsDeductions)
+                    ? max(0, (float) $optionsDeductions['other'])
+                    : 0,
+            ];
+        }
+
         $totalDeductions = round(array_sum($deductions), 2);
 
         return [
@@ -185,10 +315,11 @@ class PayrollService
             'overtime_pay' => $overtimePay,
             'overtime_rate' => $overtimeRate,
             'gross_pay' => $grossPay,
-            'sss_deduction' => $deductions['SSS'] ?? 0,
-            'philhealth_deduction' => $deductions['PhilHealth'] ?? 0,
-            'pagibig_deduction' => $deductions['Pag-IBIG'] ?? 0,
-            'withholding_tax' => $deductions['Withholding Tax'] ?? 0,
+            'sss_deduction' => $deductions['SSS'],
+            'philhealth_deduction' => $deductions['PhilHealth'],
+            'pagibig_deduction' => $deductions['Pag-IBIG'],
+            'withholding_tax' => $deductions['Withholding Tax'],
+            'other_deduction' => $deductions['Other Deduction'],
             'total_deductions' => $totalDeductions,
             'net_pay' => round($grossPay - $totalDeductions, 2),
             'attendance_days' => $this->attendanceDays($attendance),
@@ -203,7 +334,7 @@ class PayrollService
             ]);
         }
 
-        $incomplete = $attendance->first(fn (AttendanceLog $row) => $row->status !== 'absent' && (! $row->time_in || ! $row->time_out));
+        $incomplete = $attendance->first(fn(AttendanceLog $row) => $row->status !== 'absent' && (! $row->time_in || ! $row->time_out));
         if ($incomplete) {
             $missingPart = ! $incomplete->time_in ? 'time-in' : 'time-out';
             throw ValidationException::withMessages([
@@ -211,14 +342,14 @@ class PayrollService
             ]);
         }
 
-        $pending = $attendance->first(fn (AttendanceLog $row) => $row->approval_status === 'pending');
+        $pending = $attendance->first(fn(AttendanceLog $row) => $row->approval_status === 'pending');
         if ($pending) {
             throw ValidationException::withMessages([
                 'employee_ids' => "{$employee->full_name} has attendance awaiting a decision on {$pending->attendance_date?->toDateString()}.",
             ]);
         }
 
-        $notFinalized = $attendance->first(fn (AttendanceLog $row) => ! $row->payroll_ready_at);
+        $notFinalized = $attendance->first(fn(AttendanceLog $row) => ! $row->payroll_ready_at);
         if ($notFinalized) {
             throw ValidationException::withMessages([
                 'employee_ids' => "{$employee->full_name}'s attendance has not been saved as payroll ready for {$start} to {$end}.",
@@ -248,14 +379,23 @@ class PayrollService
             ['earning', 'Hourly Rate', $calculation['hourly_rate'], 'system:rate'],
             ['earning', 'Regular Pay', $calculation['regular_pay'], 'system:earning'],
             ['earning', 'Overtime Pay', $calculation['overtime_pay'], 'system:earning'],
-            ['deduction', 'SSS', $calculation['sss_deduction'], 'system:deduction'],
-            ['deduction', 'PhilHealth', $calculation['philhealth_deduction'], 'system:deduction'],
-            ['deduction', 'Pag-IBIG', $calculation['pagibig_deduction'], 'system:deduction'],
-            ['deduction', 'Withholding Tax', $calculation['withholding_tax'], 'system:deduction'],
+            ['deduction', 'SSS', $calculation['sss_deduction'] ?? 0, 'system:deduction'],
+            ['deduction', 'PhilHealth', $calculation['philhealth_deduction'] ?? 0, 'system:deduction'],
+            ['deduction', 'Pag-IBIG', $calculation['pagibig_deduction'] ?? 0, 'system:deduction'],
+            ['deduction', 'Withholding Tax', $calculation['withholding_tax'] ?? 0, 'system:deduction'],
+            ['deduction', 'Other Deduction', $calculation['other_deduction'] ?? 0, 'system:deduction'],
         ];
 
         foreach ($items as [$type, $name, $amount, $description]) {
-            if ((float) $amount <= 0 && ! in_array($name, ['Regular Hours', 'Overtime Hours', 'Hourly Rate'], true)) {
+            $amount = round((float) $amount, 2);
+            $isInformational = in_array($name, ['Regular Hours', 'Overtime Hours', 'Hourly Rate'], true);
+
+            // ⭐ HARDENED: Deduction rows with a zero amount are never written.
+            if ($type === 'deduction' && $amount <= 0) {
+                continue;
+            }
+
+            if ($amount <= 0 && ! $isInformational) {
                 continue;
             }
 
@@ -294,7 +434,7 @@ class PayrollService
 
     private function attendanceDays(Collection $attendance): array
     {
-        return $attendance->map(fn ($row) => [
+        return $attendance->map(fn($row) => [
             'date' => $row->attendance_date?->toDateString(),
             'day' => $row->attendance_date?->format('D'),
             'schedule_time' => $row->schedule ? trim(($row->schedule->start_time ?? '') . ' - ' . ($row->schedule->end_time ?? '')) : 'Unscheduled',

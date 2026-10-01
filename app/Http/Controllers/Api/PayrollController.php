@@ -69,9 +69,46 @@ class PayrollController extends Controller
         $data = $request->validate([
             'employee_ids' => 'required|array|min:1',
             'employee_ids.*' => 'integer|exists:employees,employee_id',
+            'auto_government_deductions' => 'nullable|boolean',
+            'skip_deductions' => 'nullable|boolean',
+            'deductions' => 'nullable|array',
+            'deductions.sss' => 'nullable|numeric|min:0',
+            'deductions.pagibig' => 'nullable|numeric|min:0',
+            'deductions.philhealth' => 'nullable|numeric|min:0',
+            'deductions.tax' => 'nullable|numeric|min:0',
+            'deductions.other' => 'nullable|numeric|min:0',
         ]);
 
-        return $this->ok($service->previewMany($data['employee_ids'], $start, $end), 'Payroll preview generated');
+        $rawDeductions = is_array($data['deductions'] ?? null) ? $data['deductions'] : [];
+
+        $normalizedDeductions = [
+            'sss' => max(0, (float) ($rawDeductions['sss'] ?? 0)),
+            'pagibig' => max(0, (float) ($rawDeductions['pagibig'] ?? 0)),
+            'philhealth' => max(0, (float) ($rawDeductions['philhealth'] ?? 0)),
+            'tax' => max(0, (float) ($rawDeductions['tax'] ?? 0)),
+            'other' => max(0, (float) ($rawDeductions['other'] ?? 0)),
+        ];
+
+        $hasAnyManualDeduction = $normalizedDeductions['sss'] > 0
+            || $normalizedDeductions['pagibig'] > 0
+            || $normalizedDeductions['philhealth'] > 0
+            || $normalizedDeductions['tax'] > 0
+            || $normalizedDeductions['other'] > 0;
+
+        $autoGovernment = (bool) ($data['auto_government_deductions'] ?? false);
+        $skipDeductions = (bool) ($data['skip_deductions'] ?? false)
+            || (! $hasAnyManualDeduction && ! $autoGovernment);
+
+        $options = [
+            'deductions' => $normalizedDeductions,
+            'auto_government_deductions' => $skipDeductions ? false : $autoGovernment,
+            'skip_deductions' => $skipDeductions,
+        ];
+
+        return $this->ok(
+            $service->previewMany($data['employee_ids'], $start, $end, $options),
+            'Payroll preview generated'
+        );
     }
 
     public function process(Request $request, PayrollService $service)
@@ -82,7 +119,78 @@ class PayrollController extends Controller
             'employee_ids' => 'required|array|min:1',
             'employee_ids.*' => 'integer|distinct|exists:employees,employee_id',
             'notes' => 'nullable|string',
+            'cutoff_type' => 'nullable|string',
+            'auto_government_deductions' => 'nullable|boolean',
+            'skip_deductions' => 'nullable|boolean',
+            'force_reprocess' => 'nullable|boolean',
+            'force_reason' => 'nullable|string',
+            'deductions' => 'nullable|array',
+            'deductions.sss' => 'nullable|numeric|min:0',
+            'deductions.pagibig' => 'nullable|numeric|min:0',
+            'deductions.philhealth' => 'nullable|numeric|min:0',
+            'deductions.tax' => 'nullable|numeric|min:0',
+            'deductions.other' => 'nullable|numeric|min:0',
+            'deductions.other_type' => 'nullable|string|max:100',
+            'deductions.other_notes' => 'nullable|string',
+            'deductions.notes' => 'nullable|string',
         ]);
+
+        // ⭐ HARDENED: A `null` deductions payload OR an explicit
+        //    `skip_deductions=true` flag unconditionally forces every
+        //    deduction to zero AND disables auto-government deductions.
+        $deductionsPayloadIsNull = array_key_exists('deductions', $data)
+            && $data['deductions'] === null;
+
+        $skipDeductions = (bool) ($data['skip_deductions'] ?? false);
+        $autoGovernment = (bool) ($data['auto_government_deductions'] ?? false);
+
+        $rawDeductions = is_array($data['deductions'] ?? null) ? $data['deductions'] : [];
+
+        $normalizedDeductions = [
+            'sss' => max(0, (float) ($rawDeductions['sss'] ?? 0)),
+            'pagibig' => max(0, (float) ($rawDeductions['pagibig'] ?? 0)),
+            'philhealth' => max(0, (float) ($rawDeductions['philhealth'] ?? 0)),
+            'tax' => max(0, (float) ($rawDeductions['tax'] ?? 0)),
+            'other' => max(0, (float) ($rawDeductions['other'] ?? 0)),
+            'other_type' => $rawDeductions['other_type'] ?? null,
+            'other_notes' => $rawDeductions['other_notes'] ?? null,
+            'notes' => $rawDeductions['notes'] ?? null,
+        ];
+
+        $hasAnyManualDeduction = $normalizedDeductions['sss'] > 0
+            || $normalizedDeductions['pagibig'] > 0
+            || $normalizedDeductions['philhealth'] > 0
+            || $normalizedDeductions['tax'] > 0
+            || $normalizedDeductions['other'] > 0;
+
+        $forceZeroDeductions = $skipDeductions
+            || $deductionsPayloadIsNull
+            || (! $hasAnyManualDeduction && ! $autoGovernment);
+
+        if ($forceZeroDeductions) {
+            $normalizedDeductions = [
+                'sss' => 0,
+                'pagibig' => 0,
+                'philhealth' => 0,
+                'tax' => 0,
+                'other' => 0,
+                'other_type' => null,
+                'other_notes' => null,
+                'notes' => null,
+            ];
+            $autoGovernment = false;
+            $skipDeductions = true;
+        }
+
+        $payrollOptions = [
+            'deductions' => $normalizedDeductions,
+            'auto_government_deductions' => $autoGovernment,
+            'skip_deductions' => $skipDeductions,
+            'cutoff_type' => $data['cutoff_type'] ?? null,
+            'force_reprocess' => (bool) ($data['force_reprocess'] ?? false),
+            'force_reason' => $data['force_reason'] ?? null,
+            'notes' => $data['notes'] ?? null,
+        ];
 
         $payrolls = collect();
         $skipped = collect();
@@ -93,7 +201,8 @@ class PayrollController extends Controller
                     (int) $employeeId,
                     $start,
                     $end,
-                    $data['notes'] ?? null
+                    $data['notes'] ?? null,
+                    $payrollOptions
                 ));
                 $payrolls->push($payroll);
                 AuditLog::log('payroll_processed', AuditLog::MODULE_PAYROLL, $payroll->payroll_id, null, $payroll->getAttributes());
@@ -106,7 +215,9 @@ class PayrollController extends Controller
                 report($exception);
                 $skipped->push([
                     'employee_id' => (int) $employeeId,
-                    'reason' => 'Payroll processing failed for this employee. Review the attendance record and try again.',
+                    'reason' => config('app.debug')
+                        ? $exception->getMessage()
+                        : 'Payroll processing failed for this employee. Review the attendance record and try again.',
                 ]);
             }
         }
@@ -184,6 +295,51 @@ class PayrollController extends Controller
                     $this->upsertNamedDeduction($payroll, $itemName, (float) $data[$field]);
                 }
             }
+
+            // ⭐ FIX: Recompute and persist the payroll totals after any
+            //    deduction edits. Without this, `$payroll->total_deductions`
+            //    and `$payroll->net_pay` remain stale in the DB, so the
+            //    payslip and history views keep showing the old values.
+            $manualDeductionTotal = (float) PayrollItem::where('payroll_id', $payroll->payroll_id)
+                ->where('item_type', 'deduction')
+                ->where('item_name', 'like', 'Manual Deduction%')
+                ->sum('amount');
+
+            $sssTotal = (float) ($data['sss_deduction'] ?? $payroll->sss_deduction ?? 0);
+            $pagibigTotal = (float) ($data['pagibig_deduction'] ?? $payroll->pagibig_deduction ?? 0);
+            $philhealthTotal = (float) ($data['philhealth_deduction'] ?? $payroll->philhealth_deduction ?? 0);
+            $otherTotal = (float) (
+                $data['other_deduction']
+                ?? $payroll->other_deduction
+                ?? $payroll->other_deductions
+                ?? 0
+            );
+
+            $recomputedTotal = round(
+                $sssTotal + $pagibigTotal + $philhealthTotal + $otherTotal + $manualDeductionTotal,
+                2
+            );
+
+            $grossPay = round((float) ($payroll->gross_pay ?? 0), 2);
+
+            // ⭐ Write to both column names defensively. Whichever exists in
+            //    the DB will persist; the other is silently ignored by
+            //    Eloquent's fillable check.
+            $persistPayload = [
+                'sss_deduction' => round($sssTotal, 2),
+                'pagibig_deduction' => round($pagibigTotal, 2),
+                'philhealth_deduction' => round($philhealthTotal, 2),
+                'total_deductions' => $recomputedTotal,
+                'net_pay' => round($grossPay - $recomputedTotal, 2),
+            ];
+            if (\Illuminate\Support\Facades\Schema::hasColumn('payrolls', 'other_deduction')) {
+                $persistPayload['other_deduction'] = round($otherTotal, 2);
+            }
+            if (\Illuminate\Support\Facades\Schema::hasColumn('payrolls', 'other_deductions')) {
+                $persistPayload['other_deductions'] = round($otherTotal, 2);
+            }
+
+            $payroll->update($persistPayload);
         });
         AuditLog::log('payroll_edited', AuditLog::MODULE_PAYROLL, $payroll->payroll_id, $oldValues, $payroll->fresh()->getAttributes());
 
@@ -209,6 +365,34 @@ class PayrollController extends Controller
         DB::transaction(function () use ($payrolls, $data) {
             foreach ($payrolls as $payroll) {
                 $this->upsertManualDeduction($payroll, $data);
+
+                // ⭐ FIX: Recompute and persist totals so the bulk deduction
+                //    is reflected on the payrolls row, not just PayrollItem.
+                $manualDeductionTotal = (float) PayrollItem::where('payroll_id', $payroll->payroll_id)
+                    ->where('item_type', 'deduction')
+                    ->where('item_name', 'like', 'Manual Deduction%')
+                    ->sum('amount');
+
+                $sssTotal = (float) ($payroll->sss_deduction ?? 0);
+                $pagibigTotal = (float) ($payroll->pagibig_deduction ?? 0);
+                $philhealthTotal = (float) ($payroll->philhealth_deduction ?? 0);
+                $otherTotal = (float) (
+                    $payroll->other_deduction
+                    ?? $payroll->other_deductions
+                    ?? 0
+                );
+
+                $recomputedTotal = round(
+                    $sssTotal + $pagibigTotal + $philhealthTotal + $otherTotal + $manualDeductionTotal,
+                    2
+                );
+
+                $grossPay = round((float) ($payroll->gross_pay ?? 0), 2);
+
+                $payroll->update([
+                    'total_deductions' => $recomputedTotal,
+                    'net_pay' => round($grossPay - $recomputedTotal, 2),
+                ]);
             }
         });
 
@@ -362,10 +546,6 @@ class PayrollController extends Controller
             ->values();
 
         // ---- HOURLY RATE RESOLUTION ---------------------------------------
-        // Prefer the payroll row's stored rate, but fall back to the
-        // employee's own rate and then the salary grade default. This
-        // prevents the work-detail column from rendering ₱0.00 when the
-        // payroll row has no rate stored.
         $hourlyRate = (float) $payroll->hourly_rate;
         if ($hourlyRate <= 0) {
             $hourlyRate = (float) (
@@ -394,10 +574,13 @@ class PayrollController extends Controller
             ->whereBetween('attendance_date', [$payroll->cutoff_start, $payroll->cutoff_end])
             ->sum('undertime_hours'), 2);
 
+        // ⭐ `other_deductions` is a model accessor that sums PayrollItem
+        //    rows matching "Other Deduction".
+        $otherDeductionValue = (float) $payroll->other_deductions;
+
         return $this->ok([
             'payroll' => $payroll,
             'attendance_days' => $attendanceDays,
-            // Top-level work_details used by the landscape React payslip.
             'work_details' => $workDetails,
             'summary' => [
                 'company_name' => Setting::getValue('company', 'name', "Dear Babs's Fastfood and Catering Services"),
@@ -431,7 +614,8 @@ class PayrollController extends Controller
                 'pagibig' => $payroll->pagibig_deduction,
                 'philhealth' => $payroll->philhealth_deduction,
                 'tax' => $payroll->withholding_tax ?? $payroll->tax_deduction ?? 0,
-                'other_deduction' => $payroll->other_deductions,
+                'other_deduction' => $otherDeductionValue,
+                'other_deductions' => $otherDeductionValue,
                 'taxable_income' => round((float) $payroll->gross_pay, 2),
                 'net_pay' => $payroll->net_pay,
                 'work_details_totals' => [

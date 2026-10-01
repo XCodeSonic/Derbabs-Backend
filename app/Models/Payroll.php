@@ -193,14 +193,14 @@ class Payroll extends Model
     private function deductionAmountLike(string $name): float
     {
         return (float) $this->deductionItems()
-            ->filter(fn ($item) => str_contains(strtolower($item->item_name), strtolower($name)))
+            ->filter(fn($item) => str_contains(strtolower($item->item_name), strtolower($name)))
             ->sum('amount');
     }
 
     private function manualMetadata(): array
     {
         $manual = $this->deductionItems()
-            ->first(fn ($item) => str_contains(strtolower($item->item_name), 'manual deduction'));
+            ->first(fn($item) => str_contains(strtolower($item->item_name), 'manual deduction'));
 
         if (! $manual?->description) {
             return [];
@@ -213,7 +213,7 @@ class Payroll extends Model
     private function earningItems()
     {
         return $this->loadedItems()->where('item_type', 'earning')
-            ->reject(fn ($item) => in_array($item->item_name, ['Regular Hours', 'Overtime Hours', 'Hourly Rate'], true));
+            ->reject(fn($item) => in_array($item->item_name, ['Regular Hours', 'Overtime Hours', 'Hourly Rate'], true));
     }
 
     private function deductionItems()
